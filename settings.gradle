@@ -1,0 +1,3 @@
+rootProject.name = 'battle'
+include 'eureka-server'
+
