@@ -1,0 +1,30 @@
+server:
+  port: 8765
+spring:
+  application:
+    name: api-gateway
+    loadbalancer:
+      ribbon:
+        enabled: false
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - RewritePath=/user-service/(?<segment>/?.*), /$\{segment}
+        - id: battle-service
+          uri: lb://battle-service
+          predicates:
+            - Path=/battle-service/**
+          filters:
+            - RewritePath=/battle-service/(?<segment>/?.*), /$\{segment}
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+logging:
+  level:
+    org.springframework: debug

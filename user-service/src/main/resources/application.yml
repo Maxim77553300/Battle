@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: user-service
+  cloud:
+    loadbalancer:
+      ribbon.enabled: false
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        show_sql: true
+    generate:
+      ddl: true
+    hibernate:
+      ddl-auto: none
+#  liquibase:
+#    change-log: db/changelog/liquibase-changeLog-master.xml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/management?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 77553300
+
+server:
+  port: 8082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+
+jwt:
+  token:
+    secret: jwt
+    expired: 3600000
+  clientId: user
+  client-secret: secret
+  accessTokenValiditySeconds: 120
+  refreshTokenValiditySeconds: 1000
+  authorizedGrantTypes: password
