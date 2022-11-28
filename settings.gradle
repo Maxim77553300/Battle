@@ -3,4 +3,3 @@ rootProject.name = 'battle'
 include 'user-service'
 include 'battle-service'
 include 'statistic-service'
-
