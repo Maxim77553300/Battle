@@ -1,14 +1,16 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.6'
 }
 
 group 'by.battle'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "2021.0.0")
 }
 
 dependencies {

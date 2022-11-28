@@ -1,5 +1,6 @@
 server:
   port: 8765
+
 spring:
   application:
     name: api-gateway
@@ -21,6 +22,12 @@ spring:
             - Path=/battle-service/**
           filters:
             - RewritePath=/battle-service/(?<segment>/?.*), /$\{segment}
+        - id: statistic-service
+          uri: lb://statistic-service
+          predicates:
+            - Path=/statistic-service/**
+          filters:
+            - RewritePath=/statistic-service/(?<segment>/?.*), /$\{segment}
 eureka:
   client:
     healthcheck:
