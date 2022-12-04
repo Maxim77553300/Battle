@@ -1,13 +1,13 @@
-package by.battle;
+package by.battle.userservice;
 
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StatisticService {
+public class UserClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StatisticService.class, args);
+        SpringApplication.run(UserClientApplication.class, args);
     }
 }
