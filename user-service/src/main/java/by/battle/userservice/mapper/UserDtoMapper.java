@@ -3,11 +3,16 @@ package by.battle.userservice.mapper;
 import by.battle.userservice.dto.UserDto;
 import by.battle.userservice.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
-public abstract class UserDtoMapper {
+@Mapper(componentModel = "spring", uses = RoleDtoMapper.class)
+public interface UserDtoMapper {
 
-    public abstract UserDto mapToDto(User user);
+    @Mapping(source = "roles", target = "roleSet")
+    UserDto mapToDto(User user);
 
-    public abstract User mapFromDto(UserDto userDto);
+    @Mapping(target = "created_at", ignore = true)
+    @Mapping(target = "updated_at", ignore = true)
+    @Mapping(source = "roleSet", target = "roles")
+    User mapFromDto(UserDto userDto);
 }

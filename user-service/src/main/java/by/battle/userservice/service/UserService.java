@@ -1,19 +1,18 @@
 package by.battle.userservice.service;
 
-import by.battle.userservice.dto.UserDto;
+import by.battle.userservice.entity.User;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface UserService {
 
-    List<UserDto> findAll();
+    List<User> findAll();
 
-    UserDto findById(UUID id);
+    User findById(String id);
 
-    void updateById(UserDto userDto, UUID id);
+    User updateById(User user, String id);
 
-    void delete(UUID id);
+    void delete(String id);
 
-    void save(UserDto userDto);
+    User save(User user);
 }

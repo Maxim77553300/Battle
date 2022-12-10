@@ -1,6 +1,7 @@
 package by.battle.userservice.controller;
 
 import by.battle.userservice.dto.UserDto;
+import by.battle.userservice.mapper.UserDtoMapper;
 import by.battle.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -25,33 +27,35 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final UserDtoMapper userDtoMapper;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
-        List<UserDto> userDtoList = userService.findAll();
+        List<UserDto> userDtoList = userService.findAll().stream()
+                .map(userDtoMapper::mapToDto).collect(Collectors.toList());
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable("id") UUID id) {
-        UserDto userDto = userService.findById(id);
+    public ResponseEntity<UserDto> findById(@PathVariable("id") String id) {
+        UserDto userDto = userDtoMapper.mapToDto(userService.findById(id));
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateById(@RequestBody UserDto userDto, @PathVariable("id") UUID id) {
-        userService.updateById(userDto, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<UserDto> updateById(@Valid @RequestBody UserDto userDto, @PathVariable("id") String id) {
+        UserDto userDtoUpdated = userDtoMapper.mapToDto(userService.updateById(userDtoMapper.mapFromDto(userDto), id));
+        return new ResponseEntity<>(userDtoUpdated, HttpStatus.OK);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> save(@RequestBody UserDto userDto) {
-        userService.save(userDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<UserDto> save(@Valid @RequestBody UserDto userDto) {
+        UserDto userDtoFromDb = userDtoMapper.mapToDto(userService.save(userDtoMapper.mapFromDto(userDto)));
+        return new ResponseEntity<>(userDtoFromDb, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

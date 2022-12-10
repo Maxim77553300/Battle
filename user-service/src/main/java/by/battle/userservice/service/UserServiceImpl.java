@@ -1,10 +1,8 @@
 package by.battle.userservice.service;
 
-import by.battle.userservice.dto.UserDto;
+import by.battle.userservice.entity.Role;
 import by.battle.userservice.entity.Status;
 import by.battle.userservice.entity.User;
-import by.battle.userservice.exception.UserNotFoundException;
-import by.battle.userservice.mapper.UserDtoMapper;
 import by.battle.userservice.repository.RoleRepository;
 import by.battle.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,58 +11,66 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final String USER_NAME = "USER";
+    private static final String ADMIN_NAME = "ADMIN";
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserDtoMapper userDtoMapper;
 
     @Override
-    public List<UserDto> findAll() {
-        return userRepository.findAll().stream()
-                .map(userDtoMapper::mapToDto).collect(Collectors.toList());
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override
-    public UserDto findById(UUID id) {
-        return userDtoMapper.mapToDto(userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString())));
+    public User findById(String id) {
+        return findUserById(id);
     }
 
     @Override
-    public void updateById(UserDto userDto, UUID id) {
-        User userFromDb = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString()));
-        userUpdate(userDto, userFromDb);
-        userRepository.save(userFromDb);
+    public User updateById(User user, String id) {
+        User userFromDb = findUserById(id);
+        updateUser(user, userFromDb);
+        return userRepository.save(userFromDb);
     }
 
     @Override
-    public void delete(UUID id) {
-        User userFromDb = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
+    public void delete(String id) {
+        User userFromDb = findUserById(id);
         userFromDb.setStatus(Status.NOT_ACTIVE);
         userRepository.save(userFromDb);
     }
 
     @Override
-    public void save(UserDto userDto) {
-        User user = userDtoMapper
-                .mapFromDto(userDto)
-                .setStatus(Status.ACTIVE)
-                .setRole(Set.of(roleRepository.findByName("USER")));
-        userRepository.save(user);
+    public User save(User user) {
+        setActiveUser(user);
+        return userRepository.save(user);
     }
 
-    private void userUpdate(UserDto userDto, User userFromDb) {
+    private void updateUser(User user, User userFromDb) {
         userFromDb
-                .setName(userDto.getName())
-                .setPassword(userDto.getPassword())
-                .setEmail(userDto.getEmail());
+                .setName(user.getName())
+                .setPassword(user.getPassword())
+                .setEmail(user.getEmail());
+    }
+
+    private void setActiveUser(User user) {
+        user
+                .setStatus(Status.ACTIVE)
+                .setRoles(createSetRole());
+    }
+
+    private User findUserById(String id) {
+        return userRepository.findById(id).get();
+    }
+
+    private Set<Role> createSetRole() {
+        return Set.of(roleRepository.findByName(USER_NAME), roleRepository.findByName(ADMIN_NAME));
     }
 }

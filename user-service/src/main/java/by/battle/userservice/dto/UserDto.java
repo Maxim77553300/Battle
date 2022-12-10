@@ -1,12 +1,14 @@
 package by.battle.userservice.dto;
 
-import by.battle.userservice.entity.Role;
 import by.battle.userservice.entity.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
@@ -14,18 +16,18 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDto {
 
-    @JsonProperty("name")
+    private String id;
+    @Size(min = 2)
+    @NotEmpty
     private String name;
-
-    @JsonProperty("password")
+    @Size(min = 5)
+    @NotEmpty
     private String password;
-
-    @JsonProperty("email")
+    @Email
+    @NotEmpty
     private String email;
-
-    @JsonProperty("role")
-    private Set<Role> role;
-
-    @JsonProperty("status")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Set<RoleDto> roleSet;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Status status;
 }
