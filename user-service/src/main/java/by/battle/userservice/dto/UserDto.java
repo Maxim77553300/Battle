@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +27,7 @@ public class UserDto {
     @NotEmpty
     private String email;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Set<RoleDto> roleSet;
+    private List<RoleDto> roles;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Status status;
 }

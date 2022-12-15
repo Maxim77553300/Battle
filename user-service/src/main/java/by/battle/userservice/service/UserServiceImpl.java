@@ -3,14 +3,13 @@ package by.battle.userservice.service;
 import by.battle.userservice.entity.Role;
 import by.battle.userservice.entity.Status;
 import by.battle.userservice.entity.User;
-import by.battle.userservice.repository.RoleRepository;
+import by.battle.userservice.exception.UserNotFoundException;
 import by.battle.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -21,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private static final String ADMIN_NAME = "ADMIN";
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Override
     public List<User> findAll() {
@@ -34,10 +33,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateById(User user, String id) {
-        User userFromDb = findUserById(id);
-        updateUser(user, userFromDb);
-        return userRepository.save(userFromDb);
+    public User updateById(User user) {
+        User userFromDb = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UserNotFoundException(user.getId()));
+        user.setStatus(userFromDb.getStatus());
+        user.setRoles(userFromDb.getRoles());
+        return userRepository.save(user);
     }
 
     @Override
@@ -48,29 +49,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        setActiveUser(user);
-        return userRepository.save(user);
-    }
-
-    private void updateUser(User user, User userFromDb) {
-        userFromDb
-                .setName(user.getName())
-                .setPassword(user.getPassword())
-                .setEmail(user.getEmail());
-    }
-
-    private void setActiveUser(User user) {
+    public User create(User user) {
         user
                 .setStatus(Status.ACTIVE)
-                .setRoles(createSetRole());
+                .setRoles(createListRole());
+        return userRepository.save(user);
     }
 
     private User findUserById(String id) {
         return userRepository.findById(id).get();
     }
 
-    private Set<Role> createSetRole() {
-        return Set.of(roleRepository.findByName(USER_NAME), roleRepository.findByName(ADMIN_NAME));
+    private List<Role> createListRole() {
+        return List.of(roleService.findByName(USER_NAME), roleService.findByName(ADMIN_NAME));
     }
 }

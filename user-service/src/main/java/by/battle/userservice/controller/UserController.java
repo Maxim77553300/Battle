@@ -42,15 +42,15 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateById(@Valid @RequestBody UserDto userDto, @PathVariable("id") String id) {
-        UserDto userDtoUpdated = userDtoMapper.mapToDto(userService.updateById(userDtoMapper.mapFromDto(userDto), id));
+    @PutMapping
+    public ResponseEntity<UserDto> updateById(@Valid @RequestBody UserDto userDto) {
+        UserDto userDtoUpdated = userDtoMapper.mapToDto(userService.updateById(userDtoMapper.mapFromDto(userDto)));
         return new ResponseEntity<>(userDtoUpdated, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> save(@Valid @RequestBody UserDto userDto) {
-        UserDto userDtoFromDb = userDtoMapper.mapToDto(userService.save(userDtoMapper.mapFromDto(userDto)));
+    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
+        UserDto userDtoFromDb = userDtoMapper.mapToDto(userService.create(userDtoMapper.mapFromDto(userDto)));
         return new ResponseEntity<>(userDtoFromDb, HttpStatus.CREATED);
     }
 

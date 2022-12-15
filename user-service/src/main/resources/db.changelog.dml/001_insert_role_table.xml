@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="001.01_add_role_table" author="Maksim Shumkov">
+        <insert tableName="role">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="name" value="USER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
+
+
+        <!--<?xml version="1.1" encoding="UTF-8"?>-->
+        <!--<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"-->
+        <!--                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+        <!--                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">-->
+        <!--    <changeSet id="006.01_fill_function_table" author="Nataly Tereshkova">-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="SUPER_MANAGER"/>-->
+        <!--            <column name="group_type" value="ADMIN"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="COMPANY_MANAGER"/>-->
+        <!--            <column name="group_type" value="MANAGER"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="COMPANY_USER_MANAGER"/>-->
+        <!--            <column name="group_type" value="MANAGER"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="COMPANY_REPORT_MANAGER"/>-->
+        <!--            <column name="group_type" value="MANAGER"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="COMPANY_SETTING_MANAGER"/>-->
+        <!--            <column name="group_type" value="MANAGER"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="COMPANY_ENROLLMENT_MANAGER"/>-->
+        <!--            <column name="group_type" value="MANAGER"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="CONSUMER"/>-->
+        <!--            <column name="group_type" value="CONSUMER"/>-->
+        <!--        </insert>-->
+        <!--        <insert tableName="function">-->
+        <!--            <column name="id" valueComputed="${u_id}"/>-->
+        <!--            <column name="name" value="CONSUMER_CLAIM_MANAGER"/>-->
+        <!--            <column name="group_type" value="CONSUMER"/>-->
+        <!--        </insert>-->
+        <!--    </changeSet>-->
+        <!--</databaseChangeLog>-->
