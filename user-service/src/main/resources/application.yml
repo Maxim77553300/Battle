@@ -6,7 +6,7 @@ spring:
     name: user-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/tictactoe5
+    url: jdbc:postgresql://localhost:5432/tictactoe
     username: root1
     password: 123
 

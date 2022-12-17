@@ -49,6 +49,7 @@ subprojects {
             dependency "org.junit.jupiter:junit-jupiter-engine:${junitJupiter}"
             dependency "org.mapstruct:mapstruct-processor:${mapstruct}"
             dependency "org.mapstruct:mapstruct:${mapstruct}"
+            dependency 'org.liquibase:liquibase-core:4.17.2'
         }
     }
 
