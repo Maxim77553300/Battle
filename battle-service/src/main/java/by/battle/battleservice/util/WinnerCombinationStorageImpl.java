@@ -9,9 +9,13 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class WinnerCombinationStorageImpl implements WinnerCombinationStorage{
+public class WinnerCombinationStorageImpl implements WinnerCombinationStorage {
 
     private Map<String, List<Field>> mapListsWinnerChoices;
+
+    public boolean checkWin(List<Field> fieldList) {
+        return mapListsWinnerChoices.values().stream().anyMatch(entry -> entry.containsAll(fieldList));
+    }
 
     private Map<String, List<Field>> initializeMapListsWinnerChoices() {
         // mapListsWinnerChoices = new HashMap<>();

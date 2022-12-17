@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="002.01_create_field_user_table" author="Maksim Shumkov">
+        <createTable tableName="field_user">
+            <column name="id" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="field" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="field_user"
+                                 constraintName="fk_field_user_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addUniqueConstraint tableName="field_user" columnNames="user_id"/>
+    </changeSet>
+    <changeSet id="002.02_create_result_user_table" author="Maksim Shumkov">
+        <createTable tableName="result_user">
+            <column name="id" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="result" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="result_user"
+                                 constraintName="fk_result_user_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addUniqueConstraint tableName="result_user" columnNames="user_id"/>
+    </changeSet>
+</databaseChangeLog>
