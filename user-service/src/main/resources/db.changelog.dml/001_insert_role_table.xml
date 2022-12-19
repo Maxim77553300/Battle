@@ -6,7 +6,7 @@
     <changeSet id="001.01_add_role_table" author="Maksim Shumkov">
         <insert tableName="role">
             <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
-            <column name="name" value="USER"/>
+            <column name="name" value="CUSTOMER"/>
         </insert>
         <insert tableName="role">
             <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
