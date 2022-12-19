@@ -1,4 +1,4 @@
-package by.battle;
+package by.battle.statisticservice;
 
 
 import org.springframework.boot.SpringApplication;

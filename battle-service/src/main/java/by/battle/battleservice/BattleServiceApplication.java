@@ -1,4 +1,4 @@
-package by.battle;
+package by.battle.battleservice;
 
 
 import org.springframework.boot.SpringApplication;
