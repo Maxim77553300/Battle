@@ -7,7 +7,7 @@ public interface GameService {
 
     Game create(Game game);
 
-    Game getById(Game game);
+    Game getById(String id);
 
     Game play(Move move);
 }

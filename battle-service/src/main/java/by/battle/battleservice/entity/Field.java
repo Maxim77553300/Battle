@@ -1,5 +1,29 @@
 package by.battle.battleservice.entity;
 
-public enum Field {
-    A1, B1, C1, A2, B2, C2, A3, B3, C3
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Data
+@Entity
+public class Field {
+
+    @Id
+    @Column(columnDefinition = "uuid")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private String id;
+
+    @Enumerated(EnumType.STRING)
+    private FieldName fieldName;
+
 }

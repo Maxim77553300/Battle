@@ -10,11 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/games")
@@ -26,22 +29,22 @@ public class GameController {
     private final MoveDtoMapper moveDtoMapper;
 
     @PostMapping
-    public ResponseEntity<Game> createGame(@RequestBody GameDto gameDto) {
+    public ResponseEntity<GameDto> createGame(@Valid @RequestBody GameDto gameDto) {
+        System.out.println(gameDto);
         Game game = gameService.create(gameDtoMapper.mapFromDto(gameDto));
-        return new ResponseEntity<>(game, HttpStatus.CREATED);
+        return new ResponseEntity<>(gameDtoMapper.mapToDto(game), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{gameId}")
-    public ResponseEntity<Game> getGameById(GameDto gameDto) {
-        Game game = gameService.getById(gameDtoMapper.mapFromDto(gameDto));
-        return new ResponseEntity<>(game, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<GameDto> getGameById(@PathVariable("id") String id) {
+        GameDto gameDto = gameDtoMapper.mapToDto(gameService.getById(id));
+        return new ResponseEntity<>(gameDto, HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Game> play(@RequestBody MoveDto moveDto) {
-//        Field playerOneChoice = Optional.of(Field.valueOf(playerOneChoice.getChoice()))
-//                .orElseThrow(() -> new ItemNotFoundException("There is no this choice"));
-//        Field playerTwoChoice = Field.getRandom();
-        return new ResponseEntity<>(gameService.play(moveDtoMapper.mapFromDto(moveDto)), HttpStatus.OK);
+    public ResponseEntity<GameDto> play(@RequestBody MoveDto moveDto) {
+        System.out.println(moveDto);
+        GameDto gameDto = gameDtoMapper.mapToDto(gameService.play(moveDtoMapper.mapFromDto(moveDto)));
+        return new ResponseEntity<>(gameDto, HttpStatus.OK);
     }
 }

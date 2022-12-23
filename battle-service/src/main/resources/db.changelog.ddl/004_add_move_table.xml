@@ -14,15 +14,27 @@
             <column name="user_id" type="varchar(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="field" type="varchar(10)">
+            <column name="field_id" type="varchar(36)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="move"
-                                 constraintName="fk_move_users_id"
+                                 constraintName="fk_move_users_id_id"
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
         <addUniqueConstraint tableName="move" columnNames="user_id"/>
+        <addForeignKeyConstraint baseColumnNames="game_id"
+                                 baseTableName="move"
+                                 constraintName="fk_move_users_game_id_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="game"/>
+        <addUniqueConstraint tableName="move" columnNames="game_id"/>
+        <addForeignKeyConstraint baseColumnNames="field_id"
+                                 baseTableName="move"
+                                 constraintName="fk_move_users_field_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="field"/>
+        <addUniqueConstraint tableName="move" columnNames="field_id"/>
     </changeSet>
 </databaseChangeLog>

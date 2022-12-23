@@ -1,13 +1,15 @@
 package by.battle.battleservice.dto;
 
-import by.battle.battleservice.entity.Field;
+import by.battle.battleservice.entity.FieldName;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class MoveDto {
 
     private Long id;
+    @NotBlank
     private String gameId;
-    private UserDto user;
-    private Field field;
+    private FieldName fieldName;
 }

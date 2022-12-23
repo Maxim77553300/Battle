@@ -3,21 +3,21 @@ package by.battle.battleservice.entity;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -29,20 +29,17 @@ public class User {
     )
     private String id;
     private String name;
+    @CreatedDate
+    private LocalDateTime created_at;
 
-    @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Game> gameList;
+    @ManyToMany(mappedBy = "users")
+    private List<Game> games;
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private List<ResultUser> resultList;
 
-    @OneToMany(mappedBy = "user")
-    @ToString.Exclude
-    private List<FieldUser> fieldList;
-
+    public void addResultToList(ResultUser result) {
+        resultList.add(result);
+    }
 }

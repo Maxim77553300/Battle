@@ -11,6 +11,8 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp">
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

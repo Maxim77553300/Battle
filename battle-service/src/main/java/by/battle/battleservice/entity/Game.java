@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 @Data
@@ -34,15 +36,19 @@ public class Game {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "game_status")
-    private GameStatus gameStatus;
+    private GameStatus status;
 
     @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "users_games",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-    private String winnerName;
+    @ToString.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<Move> moves;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "game")
+    private ResultUser result;
 }

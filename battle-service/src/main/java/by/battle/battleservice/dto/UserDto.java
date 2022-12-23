@@ -2,7 +2,6 @@ package by.battle.battleservice.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -13,10 +12,4 @@ public class UserDto {
     @Size(min = 2)
     @NotEmpty
     private String name;
-    @Size(min = 5)
-    @NotEmpty
-    private String password;
-    @Email
-    @NotEmpty
-    private String email;
 }
