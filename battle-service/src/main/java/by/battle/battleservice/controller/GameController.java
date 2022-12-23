@@ -43,7 +43,6 @@ public class GameController {
 
     @PutMapping
     public ResponseEntity<GameDto> play(@RequestBody MoveDto moveDto) {
-        System.out.println(moveDto);
         GameDto gameDto = gameDtoMapper.mapToDto(gameService.play(moveDtoMapper.mapFromDto(moveDto)));
         return new ResponseEntity<>(gameDto, HttpStatus.OK);
     }
