@@ -30,7 +30,7 @@ public class Move {
     )
     private String id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
 

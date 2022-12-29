@@ -20,21 +20,18 @@
         </createTable>
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="move"
-                                 constraintName="fk_move_users_id_id"
+                                 constraintName="fk_move_users_id"
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
-        <addUniqueConstraint tableName="move" columnNames="user_id"/>
         <addForeignKeyConstraint baseColumnNames="game_id"
                                  baseTableName="move"
                                  constraintName="fk_move_users_game_id_id"
                                  referencedColumnNames="id"
                                  referencedTableName="game"/>
-        <addUniqueConstraint tableName="move" columnNames="game_id"/>
         <addForeignKeyConstraint baseColumnNames="field_id"
                                  baseTableName="move"
                                  constraintName="fk_move_users_field_id"
                                  referencedColumnNames="id"
                                  referencedTableName="field"/>
-        <addUniqueConstraint tableName="move" columnNames="field_id"/>
     </changeSet>
 </databaseChangeLog>

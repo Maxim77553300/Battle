@@ -1,20 +1,25 @@
 package by.battle.battleservice.util;
 
 import by.battle.battleservice.entity.FieldName;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 public class WinnerCombinationStorageImpl implements WinnerCombinationStorage {
 
     private final Map<String, List<FieldName>> mapListsWinnerChoices;
 
+    public WinnerCombinationStorageImpl(Map<String, List<FieldName>> mapListsWinnerChoices) {
+        this.mapListsWinnerChoices = new HashMap<>();
+        initializeMapListsWinnerChoices();
+    }
+
     public boolean checkWin(List<FieldName> fieldNameList) {
-        return mapListsWinnerChoices.values().stream().anyMatch(entry -> entry.containsAll(fieldNameList));
+        return mapListsWinnerChoices.values().stream()
+                .anyMatch(fieldNameList::containsAll);
     }
 
     private Map<String, List<FieldName>> initializeMapListsWinnerChoices() {

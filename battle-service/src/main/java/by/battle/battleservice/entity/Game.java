@@ -1,6 +1,7 @@
 package by.battle.battleservice.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,10 +17,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Game {
 
@@ -49,6 +50,7 @@ public class Game {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Move> moves;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "game")
-    private ResultUser result;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<ResultUser> results;
 }

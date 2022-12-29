@@ -27,18 +27,18 @@
             <column name="game_id" type="varchar(36)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()">
+            </column>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="result_user"
                                  constraintName="fk_result_user_users_id"
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
-        <addUniqueConstraint tableName="result_user" columnNames="game_id"/>
         <addForeignKeyConstraint baseColumnNames="game_id"
                                  baseTableName="result_user"
                                  constraintName="fk_result_user_game_id"
                                  referencedColumnNames="id"
                                  referencedTableName="game"/>
-        <addUniqueConstraint tableName="result_user" columnNames="game_id"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,16 +1,16 @@
 package by.battle.battleservice.entity;
 
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -29,17 +30,11 @@ public class User {
     )
     private String id;
     private String name;
+
+    @Column(updatable = false)
     @CreatedDate
     private LocalDateTime created_at;
 
     @ManyToMany(mappedBy = "users")
     private List<Game> games;
-
-    @OneToMany(mappedBy = "user")
-    @ToString.Exclude
-    private List<ResultUser> resultList;
-
-    public void addResultToList(ResultUser result) {
-        resultList.add(result);
-    }
 }

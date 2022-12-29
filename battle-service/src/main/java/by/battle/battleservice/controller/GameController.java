@@ -30,7 +30,6 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameDto> createGame(@Valid @RequestBody GameDto gameDto) {
-        System.out.println(gameDto);
         Game game = gameService.create(gameDtoMapper.mapFromDto(gameDto));
         return new ResponseEntity<>(gameDtoMapper.mapToDto(game), HttpStatus.CREATED);
     }
