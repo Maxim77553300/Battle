@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="001.01_add_role_table" author="Maksim Shumkov">
+        <insert tableName="role">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="name" value="CUSTOMER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

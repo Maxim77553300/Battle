@@ -1,4 +1,4 @@
-package by.battle.userservice.entity;
+package by.battle.battleservice.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,12 +9,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "role")
-public class Role {
+public class Field {
 
     @Id
     @Column(columnDefinition = "uuid")
@@ -26,6 +24,6 @@ public class Role {
     private String id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "name")
-    private RoleName name;
+    private FieldName fieldName;
+
 }
