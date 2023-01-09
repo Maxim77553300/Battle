@@ -8,6 +8,7 @@ import by.battle.battleservice.entity.ResultUser;
 import by.battle.battleservice.entity.User;
 import by.battle.battleservice.exception.FieldNotFreeException;
 import by.battle.battleservice.exception.ItemNotFoundException;
+import by.battle.battleservice.exception.NotUserTurnException;
 import by.battle.battleservice.repository.GameRepository;
 import by.battle.battleservice.service.GameService;
 import by.battle.battleservice.service.MoveService;
@@ -18,6 +19,8 @@ import by.battle.battleservice.util.WinnerCombinationStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +33,6 @@ public class GameServiceImpl implements GameService {
     private final MoveService moveService;
     private final FakeSecurityHolder fakeSecurityHolder;
     private final WinnerCombinationStorage winnerCombinationStorage;
-
-    // todo - - add change players after step logic
 
     @Override
     public Game create(Game game) {
@@ -51,6 +52,7 @@ public class GameServiceImpl implements GameService {
         move.setUser(userService.findById(userId));
         Game game = findGame(move);
         isGameHasStatusStarted(game);
+        isUserTurn(game, move);
         isFieldNotFree(move, game);
         moveService.save(move);
         return checkWinner(game) ? getFinishedGame(game, move) : saveGame(game);
@@ -109,5 +111,13 @@ public class GameServiceImpl implements GameService {
                 .setUser(move.getUser())
                 .setGame(game);
         resultService.save(resultUserWinner);
+    }
+
+    private void isUserTurn(Game game, Move move) {
+        moveService.findAllByGameId(game.getId()).stream()
+                .filter(Objects::nonNull).max(Comparator.comparing(Move::getCreated_at))
+                .stream().filter(it -> it.getUser().equals(move.getUser())).findAny().ifPresent(s -> {
+                    throw new NotUserTurnException(move.getUser().getId());
+                });
     }
 }

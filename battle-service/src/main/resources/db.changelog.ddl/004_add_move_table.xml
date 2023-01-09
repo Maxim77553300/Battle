@@ -17,6 +17,7 @@
             <column name="field_id" type="varchar(36)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="move"
