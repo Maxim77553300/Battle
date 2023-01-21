@@ -1,12 +1,12 @@
 server:
-  port: 8083
+  port: 8081
 
 spring:
   application:
-    name: statistics-service
+    name: battle-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/battle-statistics-service
+    url: jdbc:postgresql://localhost:5432/battle-game-service
     username: root1
     password: 123
 

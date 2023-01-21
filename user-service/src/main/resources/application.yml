@@ -6,7 +6,7 @@ spring:
     name: user-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/tictactoe
+    url: jdbc:postgresql://localhost:5432/battle-user-service
     username: root1
     password: 123
 
