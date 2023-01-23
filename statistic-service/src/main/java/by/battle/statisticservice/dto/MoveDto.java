@@ -5,6 +5,7 @@ import by.battle.statisticservice.entity.FieldName;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Data
 public class MoveDto {
@@ -14,4 +15,5 @@ public class MoveDto {
     private String gameId;
     private String userId;
     private FieldName fieldName;
+    private LocalDateTime createdAt;
 }

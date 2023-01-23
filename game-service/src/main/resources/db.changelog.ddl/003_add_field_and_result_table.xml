@@ -11,6 +11,7 @@
             <column name="field_name" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
         </createTable>
     </changeSet>
     <changeSet id="002.02_create_result_user_table" author="Maksim Shumkov">

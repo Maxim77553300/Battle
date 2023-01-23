@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -22,8 +23,7 @@ public class UserDto {
     @Email
     @NotEmpty
     private String email;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<RoleDto> roles;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
+    private LocalDateTime createdAt;
 }

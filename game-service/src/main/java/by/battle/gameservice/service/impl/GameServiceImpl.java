@@ -52,10 +52,11 @@ public class GameServiceImpl implements GameService {
         String userId = fakeSecurityHolder.getTestUserOneId();
         move.setUser(userService.findById(userId));
         Game game = findGame(move);
-        isGameHasStatusStarted(game);
+        isGameHasNotStatusFinished(game);
         isUserTurn(game, move);
         isFieldNotFree(move, game);
         moveService.save(move);
+        game.setStatus(GameStatus.WAITING_FOR_OPPONENT);
         return checkWinner(game) ? getFinishedGame(game, move) : saveGame(game);
     }
 
@@ -73,7 +74,7 @@ public class GameServiceImpl implements GameService {
                 .orElseThrow(() -> new ItemNotFoundException(move.getGame().getName()));
     }
 
-    private void isGameHasStatusStarted(Game game) {
+    private void isGameHasNotStatusFinished(Game game) {
         if (game.getStatus().equals(GameStatus.FINISHED)) {
             throw new ItemNotFoundException(game.getName() + " finished");
         }
@@ -116,7 +117,7 @@ public class GameServiceImpl implements GameService {
 
     private void isUserTurn(Game game, Move move) {
         moveService.findAllByGameId(game.getId()).stream()
-                .filter(Objects::nonNull).max(Comparator.comparing(Move::getCreated_at))
+                .filter(Objects::nonNull).max(Comparator.comparing(Move::getCreatedAt))
                 .stream().filter(it -> it.getUser().equals(move.getUser())).findAny().ifPresent(s -> {
                     throw new NotUserTurnException(move.getUser().getId());
                 });

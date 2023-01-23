@@ -2,6 +2,8 @@ package by.battle.statisticservice.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class StatisticsUserDto {
 
@@ -13,5 +15,6 @@ public class StatisticsUserDto {
     private Integer numberOfDraw;
     private Integer numberOfLooses;
     private Integer numberOfMoves;
+    private LocalDateTime createdAt;
 
 }

@@ -1,15 +1,16 @@
 package by.battle.gameservice.dto;
 
 import by.battle.gameservice.entity.Result;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
-
-@Data
-public class ResultUserDto {
+@Getter
+@Setter
+@ToString(callSuper = true)
+public class ResultUserDto extends BaseDto {
 
     private Result result;
     private String userId;
     private String gameId;
-    private LocalDateTime created_at;
 }

@@ -12,5 +12,5 @@ public class ResultUserDto {
     private Result result;
     private String userId;
     private String gameId;
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 }

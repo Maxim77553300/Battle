@@ -15,6 +15,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
+            <column name="updated_at" type="timestamp" defaultValueComputed="now()"/>
         </createTable>
     </changeSet>
 
