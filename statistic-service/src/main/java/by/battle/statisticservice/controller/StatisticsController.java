@@ -39,6 +39,7 @@ public class StatisticsController {
                 .map(statisticUserMapper::mapFromDto)
                 .flatMap(Collection::stream).collect(Collectors.toList());
         statisticUserMapper.getMapIdUserToStatistics().clear();
+        System.out.println(gameDtos);
         return statisticsService.updateAllStatistics(statisticsUsers).stream()
                 .map(statisticUserMapper::mapToDto).collect(Collectors.toList());
     }

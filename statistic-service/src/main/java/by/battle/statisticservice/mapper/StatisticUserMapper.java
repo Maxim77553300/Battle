@@ -66,11 +66,11 @@ public abstract class StatisticUserMapper {
         return statisticsUser == null ? createStatistics() : statisticsUser;
     }
 
-    private Integer getUserMovesThisGame(GameDto gameDto) {
+    private Integer getUserMovesThisGame(GameDto gameDto, Integer index) {
         return gameDto.getMoves() == null ? 0 : gameDto
                 .getMoves()
                 .stream()
-                .filter(it -> it.getUserId().equals(gameDto.getUsers().get(0).getId()))
+                .filter(it -> it.getUserId().equals(gameDto.getUsers().get(index).getId()))
                 .map(it -> 1)
                 .reduce(0, Integer::sum);
     }
@@ -80,7 +80,7 @@ public abstract class StatisticUserMapper {
                 .setUserId(gameDto.getUsers().get(index).getId())
                 .setUserName(gameDto.getUsers().get(index).getName())
                 .setNumberOfGames(statisticsUser.getNumberOfGames() + 1)
-                .setNumberOfMoves(statisticsUser.getNumberOfMoves() + getUserMovesThisGame(gameDto))
+                .setNumberOfMoves(statisticsUser.getNumberOfMoves() + getUserMovesThisGame(gameDto, index))
                 .setNumberOfWins(statisticsUser.getNumberOfWins())
                 .setNumberOfDraw(statisticsUser.getNumberOfDraw())
                 .setNumberOfLooses(statisticsUser.getNumberOfLooses());
