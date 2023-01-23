@@ -1,5 +1,5 @@
 rootProject.name = 'battle'
 
 include 'user-service'
-include 'battle-service'
+include 'game-service'
 include 'statistic-service'

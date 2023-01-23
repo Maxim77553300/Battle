@@ -1,6 +1,7 @@
 package by.battle.userservice.service;
 
 import by.battle.userservice.entity.Role;
+import by.battle.userservice.entity.RoleName;
 import by.battle.userservice.entity.Status;
 import by.battle.userservice.entity.User;
 import by.battle.userservice.exception.UserNotFoundException;
@@ -15,9 +16,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private static final String USER_NAME = "USER";
-    private static final String ADMIN_NAME = "ADMIN";
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -61,6 +59,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<Role> createListRole() {
-        return List.of(roleService.findByName(USER_NAME), roleService.findByName(ADMIN_NAME));
+        return List.of(roleService.findByName(RoleName.CUSTOMER));
     }
 }

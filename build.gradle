@@ -1,15 +1,15 @@
 buildscript {
     ext {
         set 'springBootVersion', '2.7.6'
-        set 'junitJupiter', '5.9.0'
-        set 'dependencyManagement', '1.0.8.RELEASE'
-        set 'mapstruct', '1.5.3.Final'
+        set 'junitJupiterVersion', '5.9.0'
+        set 'dependencyManagementVersion', '1.0.8.RELEASE'
+        set 'mapstructVersion', '1.5.3.Final'
     }
 }
 
 plugins {
     id 'org.springframework.boot' version "${springBootVersion}"
-    id "io.spring.dependency-management" version "${dependencyManagement}"
+    id "io.spring.dependency-management" version "${dependencyManagementVersion}"
 }
 
 subprojects {
@@ -45,10 +45,11 @@ subprojects {
 
         dependencies {
             dependency "org.projectlombok:lombok:1.18.24"
-            dependency "org.junit.jupiter:junit-jupiter-api:${junitJupiter}"
-            dependency "org.junit.jupiter:junit-jupiter-engine:${junitJupiter}"
-            dependency "org.mapstruct:mapstruct-processor:${mapstruct}"
-            dependency "org.mapstruct:mapstruct:${mapstruct}"
+            dependency "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+            dependency "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+            dependency "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+            dependency "org.mapstruct:mapstruct:${mapstructVersion}"
+            dependency 'org.liquibase:liquibase-core:4.17.2'
         }
     }
 

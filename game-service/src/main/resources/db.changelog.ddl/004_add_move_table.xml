@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="003.01_create_move_table" author="Maksim Shumkov">
+        <createTable tableName="move">
+            <column name="id" type="varchar(36)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="game_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="field_id" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="move"
+                                 constraintName="fk_move_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="game_id"
+                                 baseTableName="move"
+                                 constraintName="fk_move_users_game_id_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="game"/>
+        <addForeignKeyConstraint baseColumnNames="field_id"
+                                 baseTableName="move"
+                                 constraintName="fk_move_users_field_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="field"/>
+    </changeSet>
+</databaseChangeLog>

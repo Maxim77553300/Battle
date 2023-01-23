@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="001.01_insert_field_table" author="Maksim Shumkov">
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="A1"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="B1"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="C1"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="A2"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="B2"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="C2"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="A3"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="B3"/>
+        </insert>
+        <insert tableName="field">
+            <column name="id" type="varchar(36)" valueComputed="${u_id}"/>
+            <column name="field_name" value="C3"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
