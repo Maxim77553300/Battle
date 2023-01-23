@@ -6,7 +6,7 @@ import by.battle.statisticservice.dto.ResultUserDto;
 import by.battle.statisticservice.dto.StatisticsUserDto;
 import by.battle.statisticservice.entity.Result;
 import by.battle.statisticservice.entity.StatisticsUser;
-import by.battle.statisticservice.util.ResultUpdater;
+import by.battle.statisticservice.updaters.ResultUpdater;
 import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;

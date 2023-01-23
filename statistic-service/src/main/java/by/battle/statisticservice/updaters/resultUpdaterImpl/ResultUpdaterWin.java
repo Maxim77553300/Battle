@@ -1,7 +1,7 @@
-package by.battle.statisticservice.util.resultUpdaterImpl;
+package by.battle.statisticservice.updaters.resultUpdaterImpl;
 
 import by.battle.statisticservice.entity.StatisticsUser;
-import by.battle.statisticservice.util.ResultUpdater;
+import by.battle.statisticservice.updaters.ResultUpdater;
 import org.springframework.stereotype.Component;
 
 @Component("WIN")

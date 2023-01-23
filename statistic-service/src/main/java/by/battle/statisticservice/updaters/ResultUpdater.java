@@ -1,4 +1,4 @@
-package by.battle.statisticservice.util;
+package by.battle.statisticservice.updaters;
 
 import by.battle.statisticservice.entity.StatisticsUser;
 
