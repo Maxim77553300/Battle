@@ -5,26 +5,24 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@ToString
-public class ResultUser extends BaseEntity {
+public class FieldPlace extends BaseEntity {
 
-    @Enumerated(EnumType.STRING)
-    private Result result;
+    private Integer horizontalIndex;
+    private Integer verticalIndex;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
+
+    @OneToOne
+    @JoinColumn(name = "move_id", referencedColumnName = "id")
+    private Move move;
 }

@@ -13,11 +13,11 @@ public class FakeSecurityHolder {
     private UserRepository userRepository;
 
     public String getTestUserOneId() {
-        return userRepository.findByName("Valera2").getId();
+        return userRepository.findByName("Valera2").get().getId();
     }
 
     public String getTestUserTwoId() {
-        return userRepository.findByName("Valera3").getId();
+        return userRepository.findByName("Valera3").get().getId();
     }
 
     public String getUserOneName() {

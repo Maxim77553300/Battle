@@ -14,6 +14,9 @@
             <column name="status" type="varchar(36)">
                 <constraints nullable="false"/>
             </column>
+            <column name="size" type="int">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
             <column name="updated_at" type="timestamp" defaultValueComputed="now()"/>
         </createTable>

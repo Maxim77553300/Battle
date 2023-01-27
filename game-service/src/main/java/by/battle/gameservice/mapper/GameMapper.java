@@ -5,8 +5,11 @@ import by.battle.gameservice.dto.GameDto;
 import by.battle.gameservice.entity.Game;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {MoveDtoMapper.class, ResultUserDtoMapper.class})
-public interface GameDtoMapper {
+@Mapper(componentModel = "spring", uses = {
+        MoveMapper.class,
+        ResultUserMapper.class,
+        PlayerFigureMapper.class})
+public interface GameMapper {
 
     GameDto mapToDto(Game game);
 

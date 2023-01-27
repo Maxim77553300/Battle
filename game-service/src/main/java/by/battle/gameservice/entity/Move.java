@@ -5,7 +5,6 @@ import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -15,16 +14,16 @@ import javax.persistence.OneToOne;
 public class Move extends BaseEntity {
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "field_id", referencedColumnName = "id")
-    private Field field;
+    @JoinColumn(name = "field_place_id", referencedColumnName = "id")
+    private FieldPlace fieldPlace;
 }

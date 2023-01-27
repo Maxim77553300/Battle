@@ -1,8 +1,9 @@
 package by.battle.gameservice.mapper;
 
 import by.battle.gameservice.dto.MoveDto;
+import by.battle.gameservice.entity.FieldPlace;
 import by.battle.gameservice.entity.Move;
-import by.battle.gameservice.repository.FieldRepository;
+import by.battle.gameservice.repository.FieldPlaceRepository;
 import by.battle.gameservice.repository.GameRepository;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -10,12 +11,13 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
-public abstract class MoveDtoMapper {
+public abstract class MoveMapper {
 
     @Autowired
     private GameRepository gameRepository;
+
     @Autowired
-    private FieldRepository fieldRepository;
+    private FieldPlaceRepository fieldPlaceRepository;
 
     public abstract MoveDto mapToDto(Move move);
 
@@ -24,13 +26,19 @@ public abstract class MoveDtoMapper {
     @AfterMapping
     public void after(@MappingTarget Move move, MoveDto moveDto) {
         move.setGame(gameRepository.findById(moveDto.getGameId()).orElse(null));
-        move.setField(fieldRepository.findByFieldName(moveDto.getFieldName()));
+        FieldPlace fieldPlace = fieldPlaceRepository
+                .findByGameIdAndHorizontalIndexAndVerticalIndex(
+                        move.getGame().getId(),
+                        moveDto.getFieldPlace().getHorizontalIndex(),
+                        moveDto.getFieldPlace().getVerticalIndex()
+                );
+        fieldPlace.setMove(move);
+        move.setFieldPlace(fieldPlace);
     }
 
     @AfterMapping
     public void after(@MappingTarget MoveDto moveDto, Move move) {
         moveDto.setGameId(move.getGame().getId());
-        moveDto.setFieldName(move.getField().getFieldName());
         moveDto.setUserId(move.getUser().getId());
     }
 }

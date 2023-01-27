@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -19,8 +20,8 @@ public class User extends BaseEntity {
 
     private String name;
 
-    @ManyToMany(mappedBy = "users")
     @ToString.Exclude
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Game> games;
 
     @LastModifiedDate

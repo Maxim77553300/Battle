@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public abstract class ResultUserDtoMapper {
+public abstract class ResultUserMapper {
 
     public abstract ResultUserDto mapToDto(ResultUser resultUser);
 
