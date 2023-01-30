@@ -16,5 +16,5 @@ public class StatisticsUserDto {
     private Integer numberOfLooses;
     private Integer numberOfMoves;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
 }
