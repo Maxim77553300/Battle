@@ -1,6 +1,5 @@
 package by.battle.statisticservice.service.impl;
 
-<<<<<<< HEAD
 import by.battle.statisticservice.dto.GameDto;
 import by.battle.statisticservice.dto.ResultUserDto;
 import by.battle.statisticservice.entity.Result;

@@ -37,12 +37,10 @@ public class StatisticsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<StatisticsUserDto> updateStatistics(@RequestBody List<GameDto> gameDtos) {
+    public List<StatisticsUserDto> updateStatistics(@Valid @RequestBody List<GameDto> gameDtos) {
         List<StatisticsUser> statisticsUsers = gameDtos.stream()
                 .map(statisticUserMapper::mapFromDto)
                 .flatMap(Collection::stream).collect(Collectors.toList());
-        statisticUserMapper.getMapIdUserToStatistics().clear();
-        System.out.println(gameDtos);
         return statisticsService.updateAllStatistics(statisticsUsers).stream()
                 .map(statisticUserMapper::mapToDto).collect(Collectors.toList());
     }
