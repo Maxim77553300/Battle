@@ -39,19 +39,15 @@ public class Game extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Move> moves;
 
-    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<ResultUser> results;
 
-    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    private List<FieldPlace> fieldPlaces;
+    private List<Cell> cells;
 
-    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<PlayerFigure> playerFigures;
 }

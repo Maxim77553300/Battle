@@ -18,5 +18,5 @@ public class MoveDto extends BaseDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String userId;
     @NotNull
-    private FieldPlaceDto fieldPlace;
+    private CellDto cell;
 }

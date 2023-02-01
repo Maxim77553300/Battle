@@ -1,6 +1,7 @@
 package by.battle.gameservice.dto;
 
 import by.battle.gameservice.entity.GameStatus;
+import by.battle.gameservice.entity.PlayerFigure;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,5 +40,5 @@ public class GameDto extends BaseDto {
 
     @NotEmpty
     @Size(min = 2, max = 2)
-    private List<PlayerFigureDto> playerFigures;
+    private List<PlayerFigure> playerFigures;
 }

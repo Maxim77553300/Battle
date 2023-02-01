@@ -1,0 +1,19 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: statistics-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/battle-statistics-service
+    username: root1
+    password: 123
+
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+
+  liquibase:
+    change-log: classpath:db_changelog_master.xml

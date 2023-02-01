@@ -1,7 +1,7 @@
 package by.battle.gameservice.mapper;
 
 import by.battle.gameservice.dto.MoveDto;
-import by.battle.gameservice.entity.FieldPlace;
+import by.battle.gameservice.entity.Cell;
 import by.battle.gameservice.entity.Move;
 import by.battle.gameservice.repository.FieldPlaceRepository;
 import by.battle.gameservice.repository.GameRepository;
@@ -26,14 +26,13 @@ public abstract class MoveMapper {
     @AfterMapping
     public void after(@MappingTarget Move move, MoveDto moveDto) {
         move.setGame(gameRepository.findById(moveDto.getGameId()).orElse(null));
-        FieldPlace fieldPlace = fieldPlaceRepository
+        Cell cell = fieldPlaceRepository
                 .findByGameIdAndHorizontalIndexAndVerticalIndex(
                         move.getGame().getId(),
-                        moveDto.getFieldPlace().getHorizontalIndex(),
-                        moveDto.getFieldPlace().getVerticalIndex()
+                        moveDto.getCell().getHorizontalIndex(),
+                        moveDto.getCell().getVerticalIndex()
                 );
-        fieldPlace.setMove(move);
-        move.setFieldPlace(fieldPlace);
+        move.setCell(cell);
     }
 
     @AfterMapping

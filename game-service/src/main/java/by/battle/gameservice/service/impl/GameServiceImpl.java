@@ -1,7 +1,7 @@
 package by.battle.gameservice.service.impl;
 
 
-import by.battle.gameservice.entity.FieldPlace;
+import by.battle.gameservice.entity.Cell;
 import by.battle.gameservice.entity.Game;
 import by.battle.gameservice.entity.GameStatus;
 import by.battle.gameservice.entity.Move;
@@ -44,7 +44,7 @@ public class GameServiceImpl implements GameService {
     public Game create(Game game) {
         game.setName(String.format("Battle %s VS %s", game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
         game.setStatus(GameStatus.STARTED);
-        game.setFieldPlaces(generateFieldFromSize(game));
+        game.setCells(generateFieldFromSize(game));
         game.setUsers(getUsersFromDbIfExist(game.getUsers()));
         setResultInProgress(game);
         game.getUsers().forEach(userService::save);
@@ -65,15 +65,15 @@ public class GameServiceImpl implements GameService {
                 .findByName(it.getName()).orElseGet(() -> it)).collect(Collectors.toList());
     }
 
-    private List<FieldPlace> generateFieldFromSize(Game game) {
+    private List<Cell> generateFieldFromSize(Game game) {
         int size = game.getSize();
-        List<FieldPlace> fieldPlaces = new ArrayList<>();
+        List<Cell> cells = new ArrayList<>();
         for (int i = size; i > 0; i--) {
             for (int j = 1; j <= size; j++) {
-                fieldPlaces.add(new FieldPlace().setHorizontalIndex(i).setVerticalIndex(j).setGame(game));
+                cells.add(new Cell().setHorizontalIndex(i).setVerticalIndex(j).setGame(game));
             }
         }
-        return fieldPlaces;
+        return cells;
     }
 
     @Override
@@ -115,14 +115,15 @@ public class GameServiceImpl implements GameService {
     }
 
     private void isFieldNotFree(Move move, Game game) {
-        if (moveService.findAllByGameId(game.getId()).stream().anyMatch(it -> it.getFieldPlace().equals(move.getFieldPlace()))) {
-            throw new FieldNotFreeException(move.getFieldPlace().getMove().getFieldPlace().toString());
+        if (moveService.findAllByGameId(game.getId()).stream()
+                .anyMatch(it -> it.getCell().equals(move.getCell()))) {
+            throw new FieldNotFreeException(move.getCell().toString());
         }
     }
 
     private boolean checkWinner(Game game, Move move) {
         return winnerCombinationChecker
-                .checkWin(game.getMoves().stream().map(Move::getFieldPlace).collect(Collectors.toList()), move);
+                .checkWin(game.getMoves());
     }
 
     private Game saveResults(Game game, Move move) {
