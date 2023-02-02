@@ -49,7 +49,7 @@ public class WinnerCombinationCheckerImpl implements WinnerCombinationChecker {
     private boolean isFieldPlacesHaveWinDiagonalCombination(List<Move> moves) {
         List<Integer> indexes = getIntStream(findGameFomMovies(moves)).boxed().collect(Collectors.toList());
         return checkDiagonalLineByHorizontalIndex(moves).containsAll(indexes)
-                || checkDiagonalLineByVerticalIndex(moves).containsAll(indexes);
+                && checkDiagonalLineByVerticalIndex(moves).containsAll(indexes);
     }
 
     private List<Integer> checkDiagonalLineByHorizontalIndex(List<Move> moves) {

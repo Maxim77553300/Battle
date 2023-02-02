@@ -1,12 +1,12 @@
 package by.battle.gameservice.dto;
 
 import by.battle.gameservice.entity.GameStatus;
-import by.battle.gameservice.entity.PlayerFigure;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -38,7 +38,7 @@ public class GameDto extends BaseDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<ResultUserDto> results;
 
-    @NotEmpty
+    @Valid
     @Size(min = 2, max = 2)
-    private List<PlayerFigure> playerFigures;
+    private List<PlayerFigureDto> playerFigures;
 }

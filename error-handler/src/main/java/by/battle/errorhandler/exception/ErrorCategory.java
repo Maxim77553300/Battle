@@ -1,0 +1,12 @@
+package by.battle.errorhandler.exception;
+
+public enum ErrorCategory {
+    VALIDATION_ERROR,
+    AUTHENTICATION_ERROR,
+    ACCESS_DENIED_ERROR,
+    UNKNOWN_ERROR,
+    RESOURCE_NOT_FOUND,
+    SERVICE_ERROR,
+    OBJECT_ALREADY_EXISTS,
+    UNPROCESSABLE_OPERATION
+}
