@@ -18,12 +18,8 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
 
     @Id
-    @Column(columnDefinition = "uuid")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String id;
 
     @Column(updatable = false)

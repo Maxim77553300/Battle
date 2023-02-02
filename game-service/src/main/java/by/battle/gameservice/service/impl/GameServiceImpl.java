@@ -44,36 +44,12 @@ public class GameServiceImpl implements GameService {
     public Game create(Game game) {
         game.setName(String.format("Battle %s VS %s", game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
         game.setStatus(GameStatus.STARTED);
-        game.setCells(generateFieldFromSize(game));
+        game.setCells(generateCellsFromSize(game));
         game.setUsers(getUsersFromDbIfExist(game.getUsers()));
         setResultInProgress(game);
         game.getUsers().forEach(userService::save);
         game.setPlayerFigures(createPlayerFigures(game));
         return gameRepository.save(game);
-    }
-
-    private List<PlayerFigure> createPlayerFigures(Game game) {
-        return game.getPlayerFigures().stream()
-                .peek(it -> it.setGame(game))
-                .map(it -> it.setUser(userService.findByName(it.getUserName())
-                        .orElseGet(it::getUser)))
-                .collect(Collectors.toList());
-    }
-
-    private List<User> getUsersFromDbIfExist(List<User> users) {
-        return users.stream().map(it -> userService
-                .findByName(it.getName()).orElseGet(() -> it)).collect(Collectors.toList());
-    }
-
-    private List<Cell> generateFieldFromSize(Game game) {
-        int size = game.getSize();
-        List<Cell> cells = new ArrayList<>();
-        for (int i = size; i > 0; i--) {
-            for (int j = 1; j <= size; j++) {
-                cells.add(new Cell().setHorizontalIndex(i).setVerticalIndex(j).setGame(game));
-            }
-        }
-        return cells;
     }
 
     @Override
@@ -91,7 +67,31 @@ public class GameServiceImpl implements GameService {
         isFieldNotFree(move, game);
         moveService.save(move);
         game.setStatus(GameStatus.WAITING_FOR_OPPONENT);
-        return checkWinner(game, move) ? getFinishedGame(game, move) : saveGame(game);
+        return checkWinner(game) ? getFinishedGame(game, move) : saveGame(game);
+    }
+
+    private List<PlayerFigure> createPlayerFigures(Game game) {
+        return game.getPlayerFigures().stream()
+                .peek(it -> it.setGame(game))
+                .map(it -> it.setUser(userService.findByName(it.getUserName())
+                        .orElseGet(it::getUser)))
+                .collect(Collectors.toList());
+    }
+
+    private List<User> getUsersFromDbIfExist(List<User> users) {
+        return users.stream().map(it -> userService
+                .findByName(it.getName()).orElseGet(() -> it)).collect(Collectors.toList());
+    }
+
+    private List<Cell> generateCellsFromSize(Game game) {
+        int size = game.getSize();
+        List<Cell> cells = new ArrayList<>();
+        for (int i = size; i > 0; i--) {
+            for (int j = 1; j <= size; j++) {
+                cells.add(new Cell().setHorizontalIndex(i).setVerticalIndex(j).setGame(game));
+            }
+        }
+        return cells;
     }
 
     private Game saveGame(Game game) {
@@ -121,7 +121,7 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-    private boolean checkWinner(Game game, Move move) {
+    private boolean checkWinner(Game game) {
         return winnerCombinationChecker
                 .checkWin(game.getMoves());
     }
