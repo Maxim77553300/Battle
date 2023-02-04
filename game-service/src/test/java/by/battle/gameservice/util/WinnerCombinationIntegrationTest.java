@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class WinnerCombinationCheckerImplTest {
+class WinnerCombinationIntegrationTest {
 
     private final static Integer size = 3;
     private final static Integer index = 0;

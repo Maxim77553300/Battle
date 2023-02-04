@@ -1,5 +1,6 @@
 package by.battle.gameservice.mapper;
 
+import by.battle.errorhandler.exception.ItemNotFoundException;
 import by.battle.gameservice.dto.MoveDto;
 import by.battle.gameservice.entity.Cell;
 import by.battle.gameservice.entity.Move;
@@ -25,7 +26,8 @@ public abstract class MoveMapper {
 
     @AfterMapping
     public void after(@MappingTarget Move move, MoveDto moveDto) {
-        move.setGame(gameRepository.findById(moveDto.getGameId()).orElse(null));
+        move.setGame(gameRepository.findById(moveDto.getGameId())
+                .orElseThrow(() -> new ItemNotFoundException("Game not found")));
         Cell cell = fieldPlaceRepository
                 .findByGameIdAndHorizontalIndexAndVerticalIndex(
                         move.getGame().getId(),

@@ -8,7 +8,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = {
         MoveMapper.class,
         ResultUserMapper.class,
-        PlayerFigureMapper.class})
+        PlayerFigureMapper.class,
+        UserMapper.class})
 public interface GameMapper {
 
     GameDto mapToDto(Game game);

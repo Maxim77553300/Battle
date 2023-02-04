@@ -1,6 +1,10 @@
 package by.battle.gameservice.service.impl;
 
 
+import by.battle.errorhandler.exception.FieldNotFreeException;
+import by.battle.errorhandler.exception.ItemAlreadyExistsException;
+import by.battle.errorhandler.exception.ItemNotFoundException;
+import by.battle.errorhandler.exception.NotUserTurnException;
 import by.battle.gameservice.entity.Cell;
 import by.battle.gameservice.entity.Game;
 import by.battle.gameservice.entity.GameStatus;
@@ -9,9 +13,6 @@ import by.battle.gameservice.entity.PlayerFigure;
 import by.battle.gameservice.entity.Result;
 import by.battle.gameservice.entity.ResultUser;
 import by.battle.gameservice.entity.User;
-import by.battle.gameservice.exception.FieldNotFreeException;
-import by.battle.gameservice.exception.ItemNotFoundException;
-import by.battle.gameservice.exception.NotUserTurnException;
 import by.battle.gameservice.repository.GameRepository;
 import by.battle.gameservice.service.GameService;
 import by.battle.gameservice.service.MoveService;
@@ -42,6 +43,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game create(Game game) {
+        isFiguresAreDifferent(game);
         game.setName(String.format("Battle %s VS %s", game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
         game.setStatus(GameStatus.STARTED);
         game.setCells(generateCellsFromSize(game));
@@ -63,7 +65,7 @@ public class GameServiceImpl implements GameService {
         move.setUser(userService.findById(userId));
         Game game = findGame(move);
         isGameHasNotStatusFinished(game);
-        isUserTurn(game, move);
+        //  isUserTurn(game, move);
         isFieldNotFree(move, game);
         moveService.save(move);
         game.setStatus(GameStatus.WAITING_FOR_OPPONENT);
@@ -154,6 +156,13 @@ public class GameServiceImpl implements GameService {
                 .setResult(result)
                 .setUser(user)
                 .setGame(game);
+    }
+
+
+    private void isFiguresAreDifferent(Game game) {
+        if (game.getPlayerFigures().get(0).getFigure().equals(game.getPlayerFigures().get(1).getFigure())) {
+            throw new ItemAlreadyExistsException(game.getPlayerFigures().get(0).getFigure().toString());
+        }
     }
 
     private void isUserTurn(Game game, Move move) {

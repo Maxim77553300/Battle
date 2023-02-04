@@ -3,6 +3,7 @@ package by.battle.gameservice.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 
 @Setter
 @Getter
+@ToString
 @Entity
 public class PlayerFigure extends BaseEntity {
 

@@ -24,15 +24,17 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="figure" type="varchar(1)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="figure"/>
             </column>
             <column name="user_name" type="varchar(36)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="user_id" type="varchar(36)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
-            <column name="game_id" type="varchar(36)"/>
+            <column name="game_id" type="varchar(36)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="figure"/>
+            </column>
             <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
         </createTable>
         <addForeignKeyConstraint baseColumnNames="user_id"
@@ -50,5 +52,8 @@
                                  constraintName="fk_move_users_field_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cell"/>
+        <addUniqueConstraint tableName="player_figure"
+                             constraintName="user_id_figure"
+                             columnNames="user_id, figure"/>
     </changeSet>
 </databaseChangeLog>

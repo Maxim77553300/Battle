@@ -1,4 +1,6 @@
 dependencies {
+    implementation project(':error-handler')
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.liquibase:liquibase-core'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
