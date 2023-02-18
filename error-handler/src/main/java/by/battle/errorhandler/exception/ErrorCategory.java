@@ -9,4 +9,5 @@ public enum ErrorCategory {
     SERVICE_ERROR,
     OBJECT_ALREADY_EXISTS,
     UNPROCESSABLE_OPERATION
+
 }
