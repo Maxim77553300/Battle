@@ -1,27 +1,33 @@
 package by.battle.gameservice.service.impl;
 
 
+import by.battle.errorhandler.exception.FieldNotFreeException;
+import by.battle.errorhandler.exception.ObjectAlreadyExistsException;
+import by.battle.errorhandler.exception.ResourceNotFoundException;
+import by.battle.errorhandler.exception.NotUserTurnException;
+import by.battle.gameservice.entity.Cell;
 import by.battle.gameservice.entity.Game;
 import by.battle.gameservice.entity.GameStatus;
 import by.battle.gameservice.entity.Move;
+import by.battle.gameservice.entity.PlayerFigure;
 import by.battle.gameservice.entity.Result;
 import by.battle.gameservice.entity.ResultUser;
 import by.battle.gameservice.entity.User;
-import by.battle.gameservice.exception.FieldNotFreeException;
-import by.battle.gameservice.exception.ItemNotFoundException;
-import by.battle.gameservice.exception.NotUserTurnException;
 import by.battle.gameservice.repository.GameRepository;
 import by.battle.gameservice.service.GameService;
 import by.battle.gameservice.service.MoveService;
 import by.battle.gameservice.service.ResultService;
 import by.battle.gameservice.service.UserService;
 import by.battle.gameservice.util.FakeSecurityHolder;
-import by.battle.gameservice.util.WinnerCombinationStorage;
+import by.battle.gameservice.util.WinnerCombinationChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,18 +39,24 @@ public class GameServiceImpl implements GameService {
     private final ResultService resultService;
     private final MoveService moveService;
     private final FakeSecurityHolder fakeSecurityHolder;
-    private final WinnerCombinationStorage winnerCombinationStorage;
+    private final WinnerCombinationChecker winnerCombinationChecker;
 
     @Override
     public Game create(Game game) {
+        isFiguresAreDifferent(game);
         game.setName(String.format("Battle %s VS %s", game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
         game.setStatus(GameStatus.STARTED);
+        game.setCells(generateCellsFromSize(game));
+        game.setUsers(getUsersFromDbIfExist(game.getUsers()));
+        setResultInProgress(game);
+        game.getUsers().forEach(userService::save);
+        game.setPlayerFigures(createPlayerFigures(game));
         return gameRepository.save(game);
     }
 
     @Override
-    public Game getById(String id) {
-        return gameRepository.findById(id).get();
+    public Optional<Game> getById(String id) {
+        return gameRepository.findById(id);
     }
 
     @Override
@@ -53,11 +65,35 @@ public class GameServiceImpl implements GameService {
         move.setUser(userService.findById(userId));
         Game game = findGame(move);
         isGameHasNotStatusFinished(game);
-        isUserTurn(game, move);
+        //  isUserTurn(game, move);
         isFieldNotFree(move, game);
         moveService.save(move);
         game.setStatus(GameStatus.WAITING_FOR_OPPONENT);
         return checkWinner(game) ? getFinishedGame(game, move) : saveGame(game);
+    }
+
+    private List<PlayerFigure> createPlayerFigures(Game game) {
+        return game.getPlayerFigures().stream()
+                .peek(it -> it.setGame(game))
+                .map(it -> it.setUser(userService.findByName(it.getUserName())
+                        .orElseGet(it::getUser)))
+                .collect(Collectors.toList());
+    }
+
+    private List<User> getUsersFromDbIfExist(List<User> users) {
+        return users.stream().map(it -> userService
+                .findByName(it.getName()).orElseGet(() -> it)).collect(Collectors.toList());
+    }
+
+    private List<Cell> generateCellsFromSize(Game game) {
+        int size = game.getSize();
+        List<Cell> cells = new ArrayList<>();
+        for (int i = size; i > 0; i--) {
+            for (int j = 1; j <= size; j++) {
+                cells.add(new Cell().setHorizontalIndex(i).setVerticalIndex(j).setGame(game));
+            }
+        }
+        return cells;
     }
 
     private Game saveGame(Game game) {
@@ -71,24 +107,25 @@ public class GameServiceImpl implements GameService {
 
     private Game findGame(Move move) {
         return gameRepository.findById(move.getGame().getId())
-                .orElseThrow(() -> new ItemNotFoundException(move.getGame().getName()));
+                .orElseThrow(() -> new ResourceNotFoundException(move.getGame().getName()));
     }
 
     private void isGameHasNotStatusFinished(Game game) {
         if (game.getStatus().equals(GameStatus.FINISHED)) {
-            throw new ItemNotFoundException(game.getName() + " finished");
+            throw new ResourceNotFoundException(game.getName() + " finished");
         }
     }
 
     private void isFieldNotFree(Move move, Game game) {
-        if (moveService.findAllByGameId(game.getId()).stream().anyMatch(it -> it.getField().equals(move.getField()))) {
-            throw new FieldNotFreeException(move.getField().getFieldName().name());
+        if (moveService.findAllByGameId(game.getId()).stream()
+                .anyMatch(it -> it.getCell().equals(move.getCell()))) {
+            throw new FieldNotFreeException(move.getCell().toString());
         }
     }
 
     private boolean checkWinner(Game game) {
-        return winnerCombinationStorage
-                .checkWin(game.getMoves().stream().map(it -> it.getField().getFieldName()).collect(Collectors.toList()));
+        return winnerCombinationChecker
+                .checkWin(game.getMoves());
     }
 
     private Game saveResults(Game game, Move move) {
@@ -100,19 +137,32 @@ public class GameServiceImpl implements GameService {
     private void saveResultLoose(Game game, Move move) {
         User userLoose = game.getUsers().stream()
                 .filter(it -> !it.equals(move.getUser())).findFirst().get();
-        ResultUser resultUserLoose = new ResultUser()
-                .setResult(Result.LOOSE)
-                .setUser(userLoose)
-                .setGame(game);
-        resultService.save(resultUserLoose);
+        ResultUser resultUser = resultService.findByUserAndGame(userLoose, game).get().setResult(Result.LOOSE);
+        resultService.save(resultUser);
     }
 
     private void saveResultWin(Game game, Move move) {
-        ResultUser resultUserWinner = new ResultUser()
-                .setResult(Result.WIN)
-                .setUser(move.getUser())
+        ResultUser resultUser = resultService.findByUserAndGame(move.getUser(), game).get().setResult(Result.WIN);
+        resultService.save(resultUser);
+    }
+
+    private void setResultInProgress(Game game) {
+        game.setResults(List.of(createResultUser(game, game.getUsers().get(0), Result.IN_PROGRESS),
+                createResultUser(game, game.getUsers().get(1), Result.IN_PROGRESS)));
+    }
+
+    private ResultUser createResultUser(Game game, User user, Result result) {
+        return new ResultUser()
+                .setResult(result)
+                .setUser(user)
                 .setGame(game);
-        resultService.save(resultUserWinner);
+    }
+
+
+    private void isFiguresAreDifferent(Game game) {
+        if (game.getPlayerFigures().get(0).getFigure().equals(game.getPlayerFigures().get(1).getFigure())) {
+            throw new ObjectAlreadyExistsException(game.getPlayerFigures().get(0).getFigure().toString());
+        }
     }
 
     private void isUserTurn(Game game, Move move) {

@@ -3,8 +3,8 @@ package by.battle.gameservice.controller;
 import by.battle.gameservice.dto.GameDto;
 import by.battle.gameservice.dto.MoveDto;
 import by.battle.gameservice.entity.Game;
-import by.battle.gameservice.mapper.GameDtoMapper;
-import by.battle.gameservice.mapper.MoveDtoMapper;
+import by.battle.gameservice.mapper.GameMapper;
+import by.battle.gameservice.mapper.MoveMapper;
 import by.battle.gameservice.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,24 +25,24 @@ import javax.validation.Valid;
 public class GameController {
 
     private final GameService gameService;
-    private final GameDtoMapper gameDtoMapper;
-    private final MoveDtoMapper moveDtoMapper;
+    private final GameMapper gameMapper;
+    private final MoveMapper moveMapper;
 
     @PostMapping
     public ResponseEntity<GameDto> createGame(@Valid @RequestBody GameDto gameDto) {
-        Game game = gameService.create(gameDtoMapper.mapFromDto(gameDto));
-        return new ResponseEntity<>(gameDtoMapper.mapToDto(game), HttpStatus.CREATED);
+        Game game = gameService.create(gameMapper.mapFromDto(gameDto));
+        return new ResponseEntity<>(gameMapper.mapToDto(game), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GameDto> getGameById(@PathVariable("id") String id) {
-        GameDto gameDto = gameDtoMapper.mapToDto(gameService.getById(id));
-        return new ResponseEntity<>(gameDto, HttpStatus.OK);
+        Game game = gameService.getById(id).get();
+        return new ResponseEntity<>(gameMapper.mapToDto(game), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<GameDto> play(@RequestBody MoveDto moveDto) {
-        GameDto gameDto = gameDtoMapper.mapToDto(gameService.play(moveDtoMapper.mapFromDto(moveDto)));
-        return new ResponseEntity<>(gameDto, HttpStatus.OK);
+    public ResponseEntity<GameDto> play(@Valid @RequestBody MoveDto moveDto) {
+        Game game = gameService.play(moveMapper.mapFromDto(moveDto));
+        return new ResponseEntity<>(gameMapper.mapToDto(game), HttpStatus.OK);
     }
 }

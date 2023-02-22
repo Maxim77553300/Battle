@@ -6,6 +6,8 @@ import by.battle.gameservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -13,12 +15,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User findByName(String name) {
+    public Optional<User> findByName(String name) {
         return userRepository.findByName(name);
     }
 
     @Override
     public User findById(String id) {
         return userRepository.findById(id).get();
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

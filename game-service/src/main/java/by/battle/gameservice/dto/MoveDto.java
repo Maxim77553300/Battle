@@ -1,12 +1,12 @@
 package by.battle.gameservice.dto;
 
-import by.battle.gameservice.entity.FieldName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,5 +17,6 @@ public class MoveDto extends BaseDto {
     private String gameId;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String userId;
-    private FieldName fieldName;
+    @NotNull
+    private CellDto cell;
 }

@@ -8,5 +8,4 @@
               dbms="postgresql"/>
     <property name="u_id" value="(SELECT uuid())" dbms="h2"/>
     <includeAll path="db.changelog.ddl"/>
-    <includeAll path="db.changelog.dml"/>
 </databaseChangeLog>

@@ -7,7 +7,6 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -15,18 +14,17 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 @Entity
+@ToString
 public class ResultUser extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Result result;
 
-    @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
 }

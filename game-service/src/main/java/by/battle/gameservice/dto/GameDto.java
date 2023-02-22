@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -18,7 +21,12 @@ public class GameDto extends BaseDto {
 
     private LocalDateTime updatedAt;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private GameStatus status;
+
+    @Min(3)
+    @Max(10)
+    private Integer size;
 
     @NotEmpty
     @Size(min = 2, max = 2)
@@ -29,4 +37,8 @@ public class GameDto extends BaseDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<ResultUserDto> results;
+
+    @Valid
+    @Size(min = 2, max = 2)
+    private List<PlayerFigureDto> playerFigures;
 }

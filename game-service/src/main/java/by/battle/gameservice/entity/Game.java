@@ -6,7 +6,6 @@ import lombok.ToString;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,11 +22,15 @@ import java.util.List;
 @Entity
 public class Game extends BaseEntity {
 
-    @Column(name = "name")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     private String name;
 
     @Enumerated(EnumType.STRING)
     private GameStatus status;
+
+    private Integer size;
 
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -36,14 +39,15 @@ public class Game extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<Move> moves;
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<ResultUser> results;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<Cell> cells;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    private List<PlayerFigure> playerFigures;
 }
