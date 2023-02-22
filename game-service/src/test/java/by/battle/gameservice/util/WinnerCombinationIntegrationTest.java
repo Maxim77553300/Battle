@@ -2,7 +2,7 @@ package by.battle.gameservice.util;
 
 import by.battle.gameservice.entity.Move;
 import by.battle.gameservice.entity.User;
-import by.battle.gameservice.util.helper.WinnerCombinationCheckerHelper;
+import by.battle.gameservice.helpers.WinnerCombinationCheckerHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

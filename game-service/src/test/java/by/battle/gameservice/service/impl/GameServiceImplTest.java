@@ -1,11 +1,12 @@
 package by.battle.gameservice.service.impl;
 
+import by.battle.errorhandler.exception.ErrorCategory;
 import by.battle.gameservice.dto.GameDto;
 import by.battle.gameservice.entity.GameStatus;
 import by.battle.gameservice.entity.Result;
+import by.battle.gameservice.helpers.GameHelper;
+import by.battle.gameservice.helpers.UserHelper;
 import by.battle.gameservice.mapper.UserMapper;
-import by.battle.gameservice.util.helper.GameHelper;
-import by.battle.gameservice.util.helper.UserHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +143,8 @@ class GameServiceImplTest {
                         .content(objectMapper.writeValueAsString(gameDto))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("userMessage").isNotEmpty());
+                .andExpect(jsonPath("category").value(ErrorCategory.UNKNOWN_ERROR.name()))
+                .andExpect(jsonPath("message").isNotEmpty());
     }
 
     @Test
@@ -154,6 +156,7 @@ class GameServiceImplTest {
                         .content(objectMapper.writeValueAsString(gameDto))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("userMessage").isNotEmpty());
+                .andExpect(jsonPath("category").value(ErrorCategory.UNKNOWN_ERROR.name()))
+                .andExpect(jsonPath("message").isNotEmpty());
     }
 }

@@ -1,4 +1,4 @@
-package by.battle.gameservice.util.helper;
+package by.battle.gameservice.helpers;
 
 import by.battle.gameservice.dto.GameDto;
 import by.battle.gameservice.dto.PlayerFigureDto;

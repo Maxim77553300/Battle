@@ -24,16 +24,16 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="figure" type="varchar(1)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="figure"/>
+                <constraints nullable="false"/>
             </column>
             <column name="user_name" type="varchar(36)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="user_id" type="varchar(36)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" uniqueConstraintName="figure"/>
             </column>
             <column name="game_id" type="varchar(36)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="figure"/>
+                <constraints nullable="false" uniqueConstraintName="figure"/>
             </column>
             <column name="created_at" type="timestamp" defaultValueComputed="now()"/>
         </createTable>
@@ -52,8 +52,18 @@
                                  constraintName="fk_move_users_field_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cell"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="player_figure"
+                                 constraintName="fk_player_figure_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="game_id"
+                                 baseTableName="player_figure"
+                                 constraintName="fk_player_figure_game_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="game"/>
         <addUniqueConstraint tableName="player_figure"
-                             constraintName="user_id_figure"
-                             columnNames="user_id, figure"/>
+                             constraintName="user_id_game_id"
+                             columnNames="user_id, game_id"/>
     </changeSet>
 </databaseChangeLog>

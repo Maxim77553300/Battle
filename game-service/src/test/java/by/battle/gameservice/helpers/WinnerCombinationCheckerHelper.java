@@ -1,4 +1,4 @@
-package by.battle.gameservice.util.helper;
+package by.battle.gameservice.helpers;
 
 import by.battle.gameservice.entity.Cell;
 import by.battle.gameservice.entity.Figure;
