@@ -1,6 +1,9 @@
 rootProject.name = 'battle'
 
-include 'user-service'
-include 'game-service'
-include 'statistic-service'
-include 'error-handler'
+include 'infrastructure:discovery-service'
+include 'infrastructure:config-service'
+include 'infrastructure:gateway-service'
+include 'applications:user-service'
+include 'applications:game-service'
+include 'applications:statistic-service'
+include 'dependencies:error-handler'
