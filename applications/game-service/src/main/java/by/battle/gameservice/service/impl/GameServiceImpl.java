@@ -2,17 +2,10 @@ package by.battle.gameservice.service.impl;
 
 
 import by.battle.errorhandler.exception.FieldNotFreeException;
+import by.battle.errorhandler.exception.NotUserTurnException;
 import by.battle.errorhandler.exception.ObjectAlreadyExistsException;
 import by.battle.errorhandler.exception.ResourceNotFoundException;
-import by.battle.errorhandler.exception.NotUserTurnException;
-import by.battle.gameservice.entity.Cell;
-import by.battle.gameservice.entity.Game;
-import by.battle.gameservice.entity.GameStatus;
-import by.battle.gameservice.entity.Move;
-import by.battle.gameservice.entity.PlayerFigure;
-import by.battle.gameservice.entity.Result;
-import by.battle.gameservice.entity.ResultUser;
-import by.battle.gameservice.entity.User;
+import by.battle.gameservice.entity.*;
 import by.battle.gameservice.repository.GameRepository;
 import by.battle.gameservice.service.GameService;
 import by.battle.gameservice.service.MoveService;
@@ -23,11 +16,7 @@ import by.battle.gameservice.util.WinnerCombinationChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,7 +54,7 @@ public class GameServiceImpl implements GameService {
         move.setUser(userService.findById(userId));
         Game game = findGame(move);
         isGameHasNotStatusFinished(game);
-        //  isUserTurn(game, move);
+        isUserTurn(game, move);
         isFieldNotFree(move, game);
         moveService.save(move);
         game.setStatus(GameStatus.WAITING_FOR_OPPONENT);

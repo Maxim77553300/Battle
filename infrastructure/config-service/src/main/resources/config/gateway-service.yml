@@ -29,8 +29,8 @@ spring:
             - RewritePath=/game-service/(?<path>.*), /$\{path}
 
         - id: statistic-service
-          uri: lb://statistic-service
+          uri: lb://statistics-service
           predicates:
-            - Path=/statistic-service/**
+            - Path=/statistics-service/**
           filters:
-            - RewritePath=/static-service/(?<path>.*), /$\{path}
+            - RewritePath=/statistics-service/(?<path>.*), /$\{path}
