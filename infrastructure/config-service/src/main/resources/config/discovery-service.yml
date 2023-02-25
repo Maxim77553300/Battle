@@ -1,0 +1,10 @@
+eureka:
+  service-url:
+    defaultZone: http://localhost:${server.port}/eureka
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+application:
+  name: discovery-service

@@ -1,0 +1,11 @@
+eureka:
+  client:
+    fetchRegistry: false
+    registerWithEureka: false
+
+server:
+  port: 8761
+
+spring:
+  config:
+    import: optional:configserver:http://localhost:8071/
