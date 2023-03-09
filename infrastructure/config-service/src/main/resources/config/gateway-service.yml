@@ -34,3 +34,10 @@ spring:
             - Path=/statistics-service/**
           filters:
             - RewritePath=/statistics-service/(?<path>.*), /$\{path}
+
+        - id: authentication-service
+          uri: lb://authentication-service
+          predicates:
+            - Path=/authentication-service/**
+          filters:
+            - RewritePath=/authentication-service/(?<path>.*), /$\{path}

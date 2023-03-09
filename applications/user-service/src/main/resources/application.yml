@@ -5,4 +5,4 @@ spring:
     import: optional:configserver:http://localhost:8071/
 
 server:
-  port: 8080
+  port: 8065
