@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -20,8 +21,9 @@ public class UserDto {
     @Size(min = 2)
     @NotEmpty
     private String name;
-    @Size(min = 5)
-    @NotEmpty
+    @NotBlank
+    @Size(min = 3, max = 50)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Email
     @NotEmpty

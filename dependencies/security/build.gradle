@@ -1,10 +1,10 @@
 dependencies {
     implementation project(':dependencies:error-handler')
 
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation api('org.springframework.boot:spring-boot-starter-security')
+    implementation api('org.springframework.boot:spring-boot-starter-oauth2-resource-server')
+    implementation api('org.springframework.cloud:spring-cloud-starter-oauth2')
+    testImplementation api('org.springframework.boot:spring-boot-starter-test')
 }
 
 configurations {

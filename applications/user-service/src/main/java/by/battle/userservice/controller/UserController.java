@@ -48,7 +48,7 @@ public class UserController {
         return new ResponseEntity<>(userDtoUpdated, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
         UserDto userDtoFromDb = userDtoMapper.mapToDto(userService.create(userDtoMapper.mapFromDto(userDto)));
         return new ResponseEntity<>(userDtoFromDb, HttpStatus.CREATED);

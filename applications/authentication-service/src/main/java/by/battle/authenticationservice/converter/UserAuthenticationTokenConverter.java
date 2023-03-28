@@ -13,6 +13,7 @@ import java.util.Map;
 public class UserAuthenticationTokenConverter extends JwtAccessTokenConverter {
 
     private static final String USER_ID = "userId";
+ //   private static final String ROLE_ID = "roleId";
 
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
@@ -23,6 +24,4 @@ public class UserAuthenticationTokenConverter extends JwtAccessTokenConverter {
         }
         return response;
     }
-
-
 }

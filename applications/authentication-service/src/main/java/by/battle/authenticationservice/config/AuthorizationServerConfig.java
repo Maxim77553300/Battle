@@ -29,24 +29,23 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
-
-    private final AuthenticationManager authenticationManager;
-
-    private final AuthUserAuthenticationConverter authenticationConverter;
-
     @Value("${keystore.path}")
     private String jksClasspath;
     @Value("${keystore.password}")
     private String jksPassword;
     @Value("${keystore.keypair-name}")
     private String keypairName;
+    private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final AuthUserAuthenticationConverter authenticationConverter;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
                 .authenticationManager(authenticationManager)
-                .accessTokenConverter(accessTokenConverter())
+                .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenStore(tokenStore());
     }
 
@@ -56,20 +55,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .inMemory()
                 .withClient("client")
                 .secret(passwordEncoder.encode(EMPTY))
-                .authorizedGrantTypes("password")
+                .authorizedGrantTypes("password", "refresh_token")
                 .scopes("scope");
     }
 
     @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        UserAuthenticationTokenConverter tokenConverter = new UserAuthenticationTokenConverter();
-        tokenConverter.setSigningKey("password");
-        return tokenConverter;
-    }
-
-    @Bean
     public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+        return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
     @Bean

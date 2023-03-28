@@ -1,11 +1,8 @@
 dependencies {
-    implementation project(':dependencies:security')
+    api project(':dependencies:security')
+
     implementation project(':dependencies:error-handler')
 
-    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.7'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.postgresql:postgresql'
     implementation 'org.springframework.cloud:spring-cloud-starter-config'

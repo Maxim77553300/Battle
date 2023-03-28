@@ -27,28 +27,29 @@ public class ResourceServiceConfig extends ResourceServerConfigurerAdapter {
 
     private static final String[] WHITE_LIST = {
             "/login",
-            "/register",
+            "/users/register",
             "/oauth/token"};
     private final AuthUserAuthenticationConverter authenticationConverter;
     private final CustomAuthenticationEntryPoint authEntryPoint;
 
     /**
      * REQUIRED: Jwt public key must be in your service properties! For example:
-     * application.yml: 'jwt.publicKey = -----BEGIN PUBLIC KEY-----someSecuredPublicKey-----END PUBLIC KEY-----'
+     * application.yml: 'security.jwt.publicKey = -----BEGIN PUBLIC KEY-----someSecuredPublicKey-----END PUBLIC KEY-----'
      */
-    private final String jwtKey;
+    private final String publicJwtKey;
 
     public ResourceServiceConfig(AuthUserAuthenticationConverter authenticationConverter,
                                  CustomAuthenticationEntryPoint authEntryPoint,
-                                 @Value("${security.jwt.publicKey}") String jwtKey) {
+                                 @Value("${security.jwt.publicKey}") String publicJwtKey) {
         this.authenticationConverter = authenticationConverter;
         this.authEntryPoint = authEntryPoint;
-        this.jwtKey = jwtKey;
+        this.publicJwtKey = publicJwtKey;
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource())
+
                 .and()
                 .authorizeRequests()
                 .antMatchers(WHITE_LIST).permitAll()
@@ -89,7 +90,7 @@ public class ResourceServiceConfig extends ResourceServerConfigurerAdapter {
     }
 
     private void customizeJwtAccessTokenConverter(JwtAccessTokenConverter converter) {
-        converter.setVerifierKey(jwtKey);
+        converter.setVerifierKey(publicJwtKey);
         DefaultAccessTokenConverter accessTokenConverter = (DefaultAccessTokenConverter) converter.getAccessTokenConverter();
         accessTokenConverter.setUserTokenConverter(authenticationConverter);
     }

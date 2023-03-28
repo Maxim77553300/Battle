@@ -13,8 +13,8 @@ import java.util.Collection;
 @Setter
 @ToString(callSuper = true)
 public class AuthUser extends User {
+
     private String userId;
-    private String companyId;
 
     @Builder
     public AuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
