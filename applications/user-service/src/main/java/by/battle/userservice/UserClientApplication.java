@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication(scanBasePackages = "by.battle")
 public class UserClientApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(UserClientApplication.class, args);
     }
