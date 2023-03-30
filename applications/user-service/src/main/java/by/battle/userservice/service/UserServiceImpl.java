@@ -1,7 +1,7 @@
 package by.battle.userservice.service;
 
+import by.battle.common.RoleName;
 import by.battle.userservice.entity.Role;
-import by.battle.userservice.entity.RoleName;
 import by.battle.userservice.entity.Status;
 import by.battle.userservice.entity.User;
 import by.battle.userservice.exception.UserNotFoundException;
@@ -35,12 +35,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateById(User user) {
+    public User update(User user) {
         User userFromDb = userRepository.findById(user.getId())
                 .orElseThrow(() -> new UserNotFoundException(user.getId()));
-        user.setStatus(userFromDb.getStatus());
-        user.setRoles(userFromDb.getRoles());
-        return userRepository.save(user);
+        return userRepository.save(updateUserFields(user, userFromDb));
     }
 
     @Override
@@ -52,12 +50,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-
         user
                 .setPassword(passwordEncoder.encode(user.getPassword()))
                 .setStatus(Status.ACTIVE)
                 .setRoles(createListRole());
         return userRepository.save(user);
+    }
+
+    private User updateUserFields(User user, User userFromDb) {
+        return user
+                .setName(userFromDb.getName())
+                .setStatus(userFromDb.getStatus())
+                .setRoles(userFromDb.getRoles())
+                .setPassword(passwordEncoder.encode(user.getPassword()));
     }
 
     private User findUserById(String id) {

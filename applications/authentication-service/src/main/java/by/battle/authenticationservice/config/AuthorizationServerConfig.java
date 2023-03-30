@@ -2,7 +2,7 @@ package by.battle.authenticationservice.config;
 
 
 import by.battle.authenticationservice.converter.UserAuthenticationTokenConverter;
-import by.battle.security.util.AuthUserAuthenticationConverter;
+import by.battle.security.converter.AuthUserAuthenticationConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

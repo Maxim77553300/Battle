@@ -1,5 +1,6 @@
 dependencies {
     api project(':dependencies:security')
+    api project(':dependencies:common')
 
     implementation project(':dependencies:error-handler')
 

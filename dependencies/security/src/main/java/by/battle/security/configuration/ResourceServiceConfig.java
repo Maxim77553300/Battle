@@ -1,7 +1,7 @@
 package by.battle.security.configuration;
 
+import by.battle.security.converter.AuthUserAuthenticationConverter;
 import by.battle.security.errorhandler.CustomAuthenticationEntryPoint;
-import by.battle.security.util.AuthUserAuthenticationConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -26,10 +26,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class ResourceServiceConfig extends ResourceServerConfigurerAdapter {
 
     private static final String[] WHITE_LIST = {
-            "/login",
+            "/users/login",
             "/users/register",
             "/oauth/token"};
-    private final AuthUserAuthenticationConverter authenticationConverter;
+    private final by.battle.security.converter.AuthUserAuthenticationConverter authenticationConverter;
     private final CustomAuthenticationEntryPoint authEntryPoint;
 
     /**
@@ -49,7 +49,6 @@ public class ResourceServiceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource())
-
                 .and()
                 .authorizeRequests()
                 .antMatchers(WHITE_LIST).permitAll()

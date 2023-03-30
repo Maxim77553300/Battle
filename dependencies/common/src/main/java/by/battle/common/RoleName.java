@@ -1,5 +1,6 @@
-package by.battle.userservice.entity;
+package by.battle.common;
 
 public enum RoleName {
+
     ADMIN, CUSTOMER
 }
