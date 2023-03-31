@@ -13,9 +13,11 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 public class UserDto extends BaseDto {
 
-    private LocalDateTime updatedAt;
+    private String id;
 
     @Size(min = 2)
     @NotEmpty
     private String name;
+
+    private LocalDateTime updatedAt;
 }

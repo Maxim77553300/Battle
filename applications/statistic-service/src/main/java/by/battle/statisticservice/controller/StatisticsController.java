@@ -7,6 +7,7 @@ import by.battle.statisticservice.mapper.StatisticUserMapper;
 import by.battle.statisticservice.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +32,14 @@ public class StatisticsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public List<StatisticsUserDto> findAllStatistics() {
         return statisticsService.findAllStatistics().stream().map(statisticUserMapper::mapToDto).collect(Collectors.toList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN')")
     public List<StatisticsUserDto> updateStatistics(@Valid @RequestBody List<GameDto> gameDtos) {
         List<StatisticsUser> statisticsUsers = gameDtos.stream()
                 .map(statisticUserMapper::mapFromDto)
