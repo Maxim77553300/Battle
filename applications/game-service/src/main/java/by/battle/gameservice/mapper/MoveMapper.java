@@ -11,6 +11,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
+
 @Mapper(componentModel = "spring")
 public abstract class MoveMapper {
 
@@ -25,6 +27,7 @@ public abstract class MoveMapper {
     public abstract Move mapFromDto(MoveDto moveDto);
 
     @AfterMapping
+    @Transactional
     public void after(@MappingTarget Move move, MoveDto moveDto) {
         move.setGame(gameRepository.findById(moveDto.getGameId())
                 .orElseThrow(() -> new ResourceNotFoundException("Game not found")));

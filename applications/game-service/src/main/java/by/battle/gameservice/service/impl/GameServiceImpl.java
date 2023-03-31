@@ -16,6 +16,7 @@ import by.battle.gameservice.util.WinnerCombinationChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class GameServiceImpl implements GameService {
     private final WinnerCombinationChecker winnerCombinationChecker;
 
     @Override
+    @Transactional
     public Game create(Game game) {
         isFiguresAreDifferent(game);
         game.setName(String.format("Battle %s VS %s", game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
