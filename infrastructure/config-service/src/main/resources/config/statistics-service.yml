@@ -2,7 +2,7 @@ spring:
   application:
     name: statistics-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/battle-statistic-service
+    url: jdbc:postgresql://postgres-statistic:5432/battle-statistic-service
     username: postgres
     password: 77553300
     driver-class-name: org.postgresql.Driver
@@ -17,6 +17,10 @@ spring:
 eureka:
   instance:
     preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://discovery-service:8761/eureka}
+
 security:
   jwt:
     publicKey: -----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4Tn0fmXURxmQ9Fh1KFRfR06AinxS8sW8ydXC+p1U9+SKf+y4u6J1zgXwMFVu/eZ8jLOj5NtRnIcrNwFWgu4mRCU8eyE0kh1P2jyZLa+nHuJdnVQYwgBjjeKXVZmGqtHoqqLaATfAuifpvuCS9BeIJFEn2/hlwb5D6DCnmBzt8UKOKArpw6xcWNuwUtwXyNXEA5IqHREv2fKxA3FKLu3OME4CQBEfrLjdF2/HcWY8nW4K1k4ezIVPS40ngc53gYSatVBHjOyxqBc30wSMK09Pk2WY8ZPpVsk9Eic0gk9C7WHHOkCcu6pR7iu34xGn1UAMwDIq2ZmGY8Y/UGDHNChdBQIDAQAB-----END PUBLIC KEY-----

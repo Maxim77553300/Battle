@@ -29,6 +29,11 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    private static final String CLIENT = "client";
+    private static final String PASSWORD_GRANT_TYPE = "password";
+    private static final String REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
+    private static final String SCOPE = "scope";
+
     @Value("${keystore.path}")
     private String jksClasspath;
     @Value("${keystore.password}")
@@ -53,10 +58,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient("client")
+                .withClient(CLIENT)
                 .secret(passwordEncoder.encode(EMPTY))
-                .authorizedGrantTypes("password", "refresh_token")
-                .scopes("scope");
+                .authorizedGrantTypes(PASSWORD_GRANT_TYPE, REFRESH_TOKEN_GRANT_TYPE)
+                .scopes(SCOPE);
     }
 
     @Bean
