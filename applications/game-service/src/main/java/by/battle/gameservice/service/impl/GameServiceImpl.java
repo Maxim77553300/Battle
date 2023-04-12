@@ -5,19 +5,30 @@ import by.battle.errorhandler.exception.FieldNotFreeException;
 import by.battle.errorhandler.exception.NotUserTurnException;
 import by.battle.errorhandler.exception.ObjectAlreadyExistsException;
 import by.battle.errorhandler.exception.ResourceNotFoundException;
-import by.battle.gameservice.entity.*;
+import by.battle.gameservice.entity.Cell;
+import by.battle.gameservice.entity.Game;
+import by.battle.gameservice.entity.GameStatus;
+import by.battle.gameservice.entity.Move;
+import by.battle.gameservice.entity.PlayerFigure;
+import by.battle.gameservice.entity.Result;
+import by.battle.gameservice.entity.ResultUser;
+import by.battle.gameservice.entity.User;
 import by.battle.gameservice.repository.GameRepository;
 import by.battle.gameservice.service.GameService;
 import by.battle.gameservice.service.MoveService;
 import by.battle.gameservice.service.ResultService;
 import by.battle.gameservice.service.UserService;
-import by.battle.gameservice.util.FakeSecurityHolder;
 import by.battle.gameservice.util.WinnerCombinationChecker;
+import by.battle.security.util.AuthUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +39,6 @@ public class GameServiceImpl implements GameService {
     private final UserService userService;
     private final ResultService resultService;
     private final MoveService moveService;
-    private final FakeSecurityHolder fakeSecurityHolder;
     private final WinnerCombinationChecker winnerCombinationChecker;
 
     @Override
@@ -51,16 +61,17 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    @Transactional
     public Game play(Move move) {
-        String userId = fakeSecurityHolder.getTestUserOneId();
-        move.setUser(userService.findById(userId));
-        Game game = findGame(move);
+        move.setUser(userService.findById(AuthUtility.getCurrentUserId()));
+        Move currentMove = moveService.createMove(move);
+        Game game = findGame(currentMove);
         isGameHasNotStatusFinished(game);
         isUserTurn(game, move);
         isFieldNotFree(move, game);
-        moveService.save(move);
+        game.addMoveToGame(currentMove);
         game.setStatus(GameStatus.WAITING_FOR_OPPONENT);
-        return checkWinner(game) ? getFinishedGame(game, move) : saveGame(game);
+        return checkWinner(game) ? getFinishedGame(game, currentMove) : saveGame(game);
     }
 
     private List<PlayerFigure> createPlayerFigures(Game game) {

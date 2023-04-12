@@ -33,7 +33,7 @@ public class Game extends BaseEntity {
     private Integer size;
 
     @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "users_games",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -50,4 +50,8 @@ public class Game extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     private List<PlayerFigure> playerFigures;
+
+    public boolean addMoveToGame(Move move) {
+        return moves.add(move);
+    }
 }

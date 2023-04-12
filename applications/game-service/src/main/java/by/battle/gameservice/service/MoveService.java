@@ -9,5 +9,5 @@ public interface MoveService {
 
     List<Move> findAllByGameId(String gameId);
 
-    Move save(Move move);
+    Move createMove(Move move);
 }

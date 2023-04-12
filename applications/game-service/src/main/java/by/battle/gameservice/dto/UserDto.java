@@ -19,5 +19,6 @@ public class UserDto extends BaseDto {
     @NotEmpty
     private String name;
 
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
