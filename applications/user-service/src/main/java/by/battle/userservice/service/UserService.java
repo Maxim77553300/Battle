@@ -10,7 +10,7 @@ public interface UserService {
 
     User findById(String id);
 
-    User updateById(User user);
+    User update(User user);
 
     void delete(String id);
 

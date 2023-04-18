@@ -1,4 +1,6 @@
 dependencies {
+    implementation project(':dependencies:security')
+    implementation project(':dependencies:common')
     implementation project(':dependencies:error-handler')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

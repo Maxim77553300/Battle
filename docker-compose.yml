@@ -1,0 +1,148 @@
+version: '3'
+
+services:
+
+  config-service:
+    image: config-service
+    hostname: config-service
+    build:
+      context: ./infrastructure/config-service/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: config-service
+    networks:
+      - bridged_network
+    ports:
+      - 8071:8071
+
+  discovery-service:
+    image: discovery-service
+    container_name: discovery-service
+    hostname: discovery-service
+    build:
+       context: ./infrastructure/discovery-service/
+       dockerfile: Dockerfile
+    restart: always
+    networks:
+      - bridged_network
+    depends_on:
+      - config-service
+    ports:
+      - 8761:8761
+
+  gateway-service:
+    image: gateway-service
+    hostname: gateway-service
+    build:
+      context: ./infrastructure/gateway-service/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: gateway-service
+    depends_on:
+      - config-service
+      - discovery-service
+    networks:
+      - bridged_network
+    ports:
+      - 8765:8765
+
+  postgres:
+    image: postgres
+    hostname: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=77553300
+      - POSTGRES_DB=battle-user-service
+    networks:
+      - bridged_network
+
+  postgres-game:
+    image: postgres
+    hostname: postgres-game
+    container_name: postgres-game
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=77553300
+      - POSTGRES_DB=battle-game-service
+    networks:
+      - bridged_network
+
+  postgres-statistic:
+    image: postgres
+    hostname: postgres-statistic
+    container_name: postgres-statistic
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=77553300
+      - POSTGRES_DB=battle-statistic-service
+    networks:
+      - bridged_network
+
+  user-service:
+    image: user-service
+    hostname: user-service
+    build:
+      context: ./applications/user-service/
+      dockerfile: Dockerfile
+    restart: always
+    container_name: user-service
+    depends_on:
+      - config-service
+      - postgres
+    networks:
+      - bridged_network
+    ports:
+      - 8065:8065
+
+  authentication-service:
+    image: authentication-service
+    hostname: authentication-service
+    build:
+      context: ./applications/authentication-service
+      dockerfile: Dockerfile
+    restart: always
+    container_name: authentication-service
+    depends_on:
+      - config-service
+      - postgres
+    networks:
+      - bridged_network
+    ports:
+      - 8081:8081
+
+  game-service:
+    image: game-service
+    hostname: game-service
+    build:
+      context: ./applications/game-service
+      dockerfile: Dockerfile
+    restart: always
+    container_name: game-service
+    depends_on:
+      - config-service
+      - postgres-game
+    networks:
+      - bridged_network
+    ports:
+      - 8091:8091
+
+  statistic-service:
+    image: statistic-service
+    hostname: statistic-service
+    build:
+      context: ./applications/statistic-service
+      dockerfile: Dockerfile
+    restart: always
+    container_name: statistic-service
+    depends_on:
+      - config-service
+      - postgres-statistic
+    networks:
+      - bridged_network
+    ports:
+      - 8083:8083
+
+networks:
+  bridged_network:
+    driver: bridge

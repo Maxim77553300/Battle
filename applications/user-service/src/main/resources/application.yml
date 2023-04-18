@@ -2,7 +2,7 @@ spring:
   application:
     name: user-service
   config:
-    import: optional:configserver:http://localhost:8071/
+    import: optional:configserver:http://config-service:8071/
 
 server:
-  port: 8080
+  port: 8065

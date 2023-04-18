@@ -8,5 +8,11 @@ spring:
       server:
         native:
           search-locations: classpath:/config
+
+eureka:
+  instance:
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka
+
 server:
   port: 8071

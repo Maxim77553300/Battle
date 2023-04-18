@@ -1,0 +1,12 @@
+dependencies {
+    api project(':dependencies:security')
+    api project(':dependencies:common')
+
+    implementation project(':dependencies:error-handler')
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.apache.commons:commons-lang3'
+}

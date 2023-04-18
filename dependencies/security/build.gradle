@@ -1,0 +1,24 @@
+dependencies {
+    implementation project(':dependencies:error-handler')
+    implementation project(':dependencies:common')
+
+    implementation api('org.springframework.boot:spring-boot-starter-security')
+    implementation api('org.springframework.boot:spring-boot-starter-oauth2-resource-server')
+    implementation api('org.springframework.cloud:spring-cloud-starter-oauth2')
+    testImplementation api('org.springframework.boot:spring-boot-starter-test')
+}
+
+configurations {
+    testClasses {
+        extendsFrom(testImplementation)
+    }
+}
+
+task testJar(type: Jar) {
+    archiveClassifier.set('test')
+    from sourceSets.test.output
+}
+
+artifacts {
+    testClasses testJar
+}

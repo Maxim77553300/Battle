@@ -1,5 +1,6 @@
 package by.battle.userservice.entity;
 
+import by.battle.common.RoleName;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 

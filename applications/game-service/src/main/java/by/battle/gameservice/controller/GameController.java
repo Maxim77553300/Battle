@@ -9,6 +9,7 @@ import by.battle.gameservice.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,18 +30,21 @@ public class GameController {
     private final MoveMapper moveMapper;
 
     @PostMapping
+    @PreAuthorize("@securityServiceImpl.isManageableGame(#gameDto)")
     public ResponseEntity<GameDto> createGame(@Valid @RequestBody GameDto gameDto) {
         Game game = gameService.create(gameMapper.mapFromDto(gameDto));
         return new ResponseEntity<>(gameMapper.mapToDto(game), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@securityServiceImpl.isManageableGame(#id)")
     public ResponseEntity<GameDto> getGameById(@PathVariable("id") String id) {
         Game game = gameService.getById(id).get();
         return new ResponseEntity<>(gameMapper.mapToDto(game), HttpStatus.OK);
     }
 
     @PutMapping
+    @PreAuthorize("@securityServiceImpl.isManageableGame(#moveDto)")
     public ResponseEntity<GameDto> play(@Valid @RequestBody MoveDto moveDto) {
         Game game = gameService.play(moveMapper.mapFromDto(moveDto));
         return new ResponseEntity<>(gameMapper.mapToDto(game), HttpStatus.OK);

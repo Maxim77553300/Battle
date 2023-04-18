@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class UserController {
     private final UserDtoMapper userDtoMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDto>> findAll() {
         List<UserDto> userDtoList = userService.findAll().stream()
                 .map(userDtoMapper::mapToDto).collect(Collectors.toList());
@@ -37,26 +39,29 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@securityServiceImpl.isManageableUser(#id)")
     public ResponseEntity<UserDto> findById(@PathVariable("id") String id) {
         UserDto userDto = userDtoMapper.mapToDto(userService.findById(id));
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PutMapping
+    @PreAuthorize("@securityServiceImpl.isManageableUser(#userDto)")
     public ResponseEntity<UserDto> updateById(@Valid @RequestBody UserDto userDto) {
-        UserDto userDtoUpdated = userDtoMapper.mapToDto(userService.updateById(userDtoMapper.mapFromDto(userDto)));
+        UserDto userDtoUpdated = userDtoMapper.mapToDto(userService.update(userDtoMapper.mapFromDto(userDto)));
         return new ResponseEntity<>(userDtoUpdated, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto) {
         UserDto userDtoFromDb = userDtoMapper.mapToDto(userService.create(userDtoMapper.mapFromDto(userDto)));
         return new ResponseEntity<>(userDtoFromDb, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@securityServiceImpl.isManageableUser(#id)")
     public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

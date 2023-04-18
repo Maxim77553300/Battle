@@ -1,4 +1,7 @@
 eureka:
+  eureka:
+    instance:
+      preferIpAddress: true
   client:
     fetchRegistry: false
     registerWithEureka: false
@@ -7,5 +10,12 @@ server:
   port: 8761
 
 spring:
-  config:
-    import: optional:configserver:http://localhost:8071/
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    config:
+      enabled: false
+
+application:
+  name: discovery-service
