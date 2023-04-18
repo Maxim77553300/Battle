@@ -96,6 +96,8 @@ services:
       - 8065:8065
 
   authentication-service:
+    image: authentication-service
+    hostname: authentication-service
     build:
       context: ./applications/authentication-service
       dockerfile: Dockerfile
@@ -110,6 +112,8 @@ services:
       - 8081:8081
 
   game-service:
+    image: game-service
+    hostname: game-service
     build:
       context: ./applications/game-service
       dockerfile: Dockerfile
@@ -124,11 +128,16 @@ services:
       - 8091:8091
 
   statistic-service:
+    image: statistic-service
+    hostname: statistic-service
     build:
       context: ./applications/statistic-service
       dockerfile: Dockerfile
     restart: always
     container_name: statistic-service
+    depends_on:
+      - config-service
+      - postgres-statistic
     networks:
       - bridged_network
     ports:

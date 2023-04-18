@@ -19,7 +19,7 @@ eureka:
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://discovery-service:8761/eureka}
+      defaultZone: http://discovery-service:8761/eureka
 
 security:
   jwt:

@@ -1,15 +1,76 @@
 spring:
   application:
     name: gateway-service
-  config:
-    import: optional:configserver:http://config-service:8071/
   main:
     web-application-type: reactive
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      discovery:
+        locator:
+          enabled: true
+        lower-case-service-id: true
 
+      routes:
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - RewritePath=/user-service/(?<path>.*), /$\{path}
+
+        - id: game-service
+          uri: lb://game-service
+          predicates:
+            - Path=/game-service/**
+          filters:
+            - RewritePath=/game-service/(?<path>.*), /$\{path}
+
+        - id: statistic-service
+          uri: lb://statistics-service
+          predicates:
+            - Path=/statistics-service/**
+          filters:
+            - RewritePath=/statistics-service/(?<path>.*), /$\{path}
+
+        - id: authentication-service
+          uri: lb://authentication-service
+          predicates:
+            - Path=/authentication-service/**
+          filters:
+            - RewritePath=/authentication-service/(?<path>.*), /$\{path}
+
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
 server:
   port: 8765
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://discovery-service:8761/eureka}
+      defaultZone: http://discovery-service:8761/eureka
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    preferIpAddress: true
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
