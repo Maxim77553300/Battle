@@ -1,4 +1,4 @@
-package by.battle.userservice.service;
+package by.battle.userservice.service.impl;
 
 import by.battle.common.RoleName;
 import by.battle.userservice.entity.Role;
@@ -6,6 +6,8 @@ import by.battle.userservice.entity.Status;
 import by.battle.userservice.entity.User;
 import by.battle.userservice.exception.UserNotFoundException;
 import by.battle.userservice.repository.UserRepository;
+import by.battle.userservice.service.RoleService;
+import by.battle.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
