@@ -3,7 +3,7 @@ spring:
     name: authentication-service
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/battle-user-service
+    url: jdbc:postgresql://localhost:5432/battle-user-service
     username: postgres
     password: 77553300
 
@@ -19,4 +19,4 @@ eureka:
     preferIpAddress: true
   client:
     serviceUrl:
-      defaultZone: http://discovery-service:8761/eureka
+      defaultZone: http://localhost:8761/eureka
