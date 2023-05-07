@@ -3,7 +3,12 @@ package by.battle.errorhandler;
 import by.battle.errorhandler.dto.BaseErrorResponseDto;
 import by.battle.errorhandler.dto.ErrorDto;
 import by.battle.errorhandler.dto.ValidationErrorErrorResponseDto;
-import by.battle.errorhandler.exception.*;
+import by.battle.errorhandler.exception.ErrorCategory;
+import by.battle.errorhandler.exception.FieldNotFreeException;
+import by.battle.errorhandler.exception.InvalidAccessRightsException;
+import by.battle.errorhandler.exception.NotUserTurnException;
+import by.battle.errorhandler.exception.ObjectAlreadyExistsException;
+import by.battle.errorhandler.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +18,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @ControllerAdvice
 public class RestResponseGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -24,7 +33,7 @@ public class RestResponseGlobalExceptionHandler extends ResponseEntityExceptionH
                 new ValidationErrorErrorResponseDto(ErrorCategory.VALIDATION_ERROR,
                         "Inputs are incorrect",
                         getErrorsFromException(ex))
-        , status);
+                , status);
     }
 
     @ExceptionHandler(NotUserTurnException.class)

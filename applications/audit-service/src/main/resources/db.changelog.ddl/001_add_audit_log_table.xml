@@ -8,18 +8,24 @@
             <column name="id" type="varchar(36)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="action" type="varchar(50)">
+            <column name="action" type="varchar(150)">
                 <constraints nullable="false"/>
             </column>
             <column name="method_signature" type="varchar(150)">
                 <constraints nullable="false"/>
             </column>
-            <column name="detail" type="varchar(150)"/>
+            <column name="detail" type="varchar(250)"/>
             <column name="created_at" type="timestamp" defaultValueComputed="now()">
                 <constraints nullable="false"/>
             </column>
             <column name="entity_id" type="varchar(150)"/>
             <column name="processing_time" type="varchar(150)"/>
         </createTable>
+    </changeSet>
+    <changeSet id="001.02_create_audit_log_table" author="Maksim Shumkov">
+        <modifyDataType
+                columnName="detail"
+                newDataType="varchar(700)"
+                tableName="audit_log"/>
     </changeSet>
 </databaseChangeLog>

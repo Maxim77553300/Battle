@@ -1,7 +1,7 @@
-package by.battle.audit.aspect;
+package by.battle.audit.service;
 
 
-import by.battle.audit.aspect.restuservlient.RestUserClient;
+import by.battle.audit.dto.AuditLogDto;
 import by.battle.security.util.AuthUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,19 +15,19 @@ import java.util.Arrays;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuditLogService {
+public class AuditLogServiceImpl implements AuditLogService{
 
-    private final RestUserClient restUserClient;
+    private final KafkaSender kafkaSender;
 
     public void audit(ProceedingJoinPoint proceedingJoinPoint, long time) {
         AuditLogDto auditLogDto = createAuditLogDto(proceedingJoinPoint, time);
-        restUserClient.sendAuditLog(auditLogDto);
+        kafkaSender.sendMessage(auditLogDto, "demo_topic");
     }
 
     public void auditException(JoinPoint joinPoint, Throwable exception) {
         AuditLogDto auditLogDto = mapToAuditLogDto((MethodSignature) joinPoint.getSignature(),
                 joinPoint.getArgs(), exception);
-        restUserClient.sendAuditLog(auditLogDto);
+        kafkaSender.sendMessage(auditLogDto, "demo_topic");
     }
 
     private String getCurrentUserId() {
@@ -52,8 +52,8 @@ public class AuditLogService {
 
     private AuditLogDto mapToAuditLogDto(MethodSignature methodSignature, Object[] args, Throwable exception) {
         return mapToAuditLogDto(methodSignature, args)
-                .setProcessingTime(null)
-                .setAction(exception.getMessage());
+                .setProcessingTime("0")
+                .setAction(exception.getClass().toString());
     }
 
     private AuditLogDto mapToAuditLogDto(MethodSignature methodSignature, Object[] args) {

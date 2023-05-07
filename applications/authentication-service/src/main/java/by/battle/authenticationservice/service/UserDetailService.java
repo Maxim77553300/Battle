@@ -3,6 +3,7 @@ package by.battle.authenticationservice.service;
 import by.battle.authenticationservice.entity.Role;
 import by.battle.authenticationservice.repository.UserRepository;
 import by.battle.security.user.AuthUser;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

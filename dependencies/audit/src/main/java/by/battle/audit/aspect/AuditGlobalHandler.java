@@ -1,5 +1,6 @@
 package by.battle.audit.aspect;
 
+import by.battle.audit.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

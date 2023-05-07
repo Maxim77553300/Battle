@@ -1,30 +1,8 @@
 spring:
   application:
     name: audit-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/battle-audit-service
-    username: postgres
-    password: 77553300
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format-sql: true
-  cloud:
-    config:
-      enabled: false
-  liquibase:
-    change-log: classpath:db_changelog_master.xml
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-    registerWithEureka: true
-    fetchRegistry: true
-  instance:
-    preferIpAddress: true
+  config:
+    import: optional:configserver:http://localhost:8071/
 
 server:
   port: 8077
