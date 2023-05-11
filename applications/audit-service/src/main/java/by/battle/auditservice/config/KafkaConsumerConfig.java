@@ -3,6 +3,7 @@ package by.battle.auditservice.config;
 import by.battle.auditservice.dto.AuditLogDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -18,7 +19,8 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    private final String bootstrapServers = "localhost:9092";
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
 
     @Bean
     public ConsumerFactory<String, AuditLogDto> consumerFactory() {
@@ -36,7 +38,6 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
-
     }
 
     @Bean
