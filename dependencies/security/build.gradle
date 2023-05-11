@@ -8,6 +8,10 @@ dependencies {
     testImplementation api('org.springframework.boot:spring-boot-starter-test')
 }
 
+/**
+ * To implement test classes of this module to your service,
+ * please use -> testImplementation project(path: ':dependencies:security', configuration: 'testClasses')
+ */
 configurations {
     testClasses {
         extendsFrom(testImplementation)
