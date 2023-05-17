@@ -7,6 +7,9 @@
     <property name="u_id" value="(SELECT md5(random()::text || clock_timestamp()::text)::uuid)"
               dbms="postgresql"/>
     <property name="u_id" value="(SELECT uuid())" dbms="h2"/>
-    <includeAll path="db.changelog.ddl"/>
-    <includeAll path="db.changelog.dml"/>
+    <include file="db.changelog.ddl/001_add_role_table.xml"/>
+    <include file="db.changelog.ddl/002_add_users_table.xml"/>
+    <include file="db.changelog.ddl/003_add_users_roles_table.xml"/>
+    <include file="db.changelog.dml/001_insert_role_table.xml"/>
+    <include file="db.changelog.dml/002_insert_admin.xml"/>
 </databaseChangeLog>

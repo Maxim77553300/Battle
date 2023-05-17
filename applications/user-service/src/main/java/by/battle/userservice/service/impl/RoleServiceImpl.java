@@ -1,8 +1,9 @@
-package by.battle.userservice.service;
+package by.battle.userservice.service.impl;
 
 import by.battle.common.RoleName;
 import by.battle.userservice.entity.Role;
 import by.battle.userservice.repository.RoleRepository;
+import by.battle.userservice.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

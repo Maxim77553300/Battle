@@ -25,11 +25,13 @@ public class UserHelper {
 
     public User createValidUserFirst() {
         return new User()
-                .setName("Valera1");
+                .setName("userName")
+                .setId("userId");
     }
 
     public User createValidUserSecond() {
         return new User()
-                .setName("Valera2");
+                .setName("Valera2")
+                .setId("userId2");
     }
 }

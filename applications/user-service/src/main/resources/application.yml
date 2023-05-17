@@ -2,7 +2,10 @@ spring:
   application:
     name: user-service
   config:
-    import: optional:configserver:http://config-service:8071/
+    import: optional:configserver:http://localhost:8071/
 
 server:
   port: 8065
+
+audit-service:
+  url: http://localhost:8077/audit-service

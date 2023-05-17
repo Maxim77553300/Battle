@@ -9,7 +9,7 @@ spring:
   application:
     name: authentication-service
   config:
-    import: optional:configserver:http://config-service:8071/
+    import: optional:configserver:http://localhost:8071/
 
 security:
   jwt:

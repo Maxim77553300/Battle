@@ -1,7 +1,8 @@
 dependencies {
-    implementation project(':dependencies:security')
+    implementation project(':dependencies:audit')
     implementation project(':dependencies:common')
     implementation project(':dependencies:error-handler')
+    implementation project(':dependencies:security')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

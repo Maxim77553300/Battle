@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
 
+    private static final String MESSAGE = "Battle %s VS %s";
     private final GameRepository gameRepository;
     private final UserService userService;
     private final ResultService resultService;
@@ -45,12 +46,13 @@ public class GameServiceImpl implements GameService {
     @Transactional
     public Game create(Game game) {
         isFiguresAreDifferent(game);
-        game.setName(String.format("Battle %s VS %s", game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
+        game.setName(String.format(MESSAGE, game.getUsers().get(0).getName(), game.getUsers().get(1).getName()));
         game.setStatus(GameStatus.STARTED);
         game.setCells(generateCellsFromSize(game));
         game.setUsers(getUsersFromDbIfExist(game.getUsers()));
         setResultInProgress(game);
-        game.getUsers().forEach(userService::save);
+        List<User> users = game.getUsers();
+        game.setUsers(userService.saveAll(users));
         game.setPlayerFigures(createPlayerFigures(game));
         return gameRepository.save(game);
     }

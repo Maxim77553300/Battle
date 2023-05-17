@@ -1,5 +1,9 @@
 package by.battle.gameservice.service.impl;
 
+import by.battle.audit.config.KafkaProducerConfig;
+import by.battle.audit.service.AuditLogService;
+import by.battle.audit.service.KafkaSender;
+import by.battle.common.RoleName;
 import by.battle.errorhandler.exception.ErrorCategory;
 import by.battle.gameservice.dto.GameDto;
 import by.battle.gameservice.entity.GameStatus;
@@ -7,11 +11,12 @@ import by.battle.gameservice.entity.Result;
 import by.battle.gameservice.helpers.GameHelper;
 import by.battle.gameservice.helpers.UserHelper;
 import by.battle.gameservice.mapper.UserMapper;
+import by.battle.security.BaseIntegrationTest;
+import by.battle.security.utils.AuthTestClaims;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,9 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class GameServiceImplTest {
+class GameServiceImplTest extends BaseIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,14 +43,21 @@ class GameServiceImplTest {
     private UserHelper userHelper;
     @Autowired
     private UserMapper userMapper;
+    @MockBean
+    private AuditLogService auditLogService;
+    @MockBean
+    private KafkaProducerConfig kafkaProducerConfig;
+    @MockBean
+    private KafkaSender kafkaSender;
 
     @Test
     public void createGame_shouldReturnStatusCreated_whenGameDtoIsValid() throws Exception {
         final GameDto gameDto = gameHelper.createValidGameDto();
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.createdAt").isNotEmpty())
@@ -83,10 +93,12 @@ class GameServiceImplTest {
                 .andExpect(jsonPath("$.playerFigures", hasSize(2)))
                 .andExpect(jsonPath("$.playerFigures[0].figure")
                         .value(gameDto.getPlayerFigures().get(0).getFigure().name()))
-                .andExpect(jsonPath("playerFigures[0].userName").value(gameDto.getPlayerFigures().get(0).getUserName()))
-                .andExpect(jsonPath("playerFigures[1].figure")
+                .andExpect(jsonPath("$.playerFigures[0].userName")
+                        .value(gameDto.getPlayerFigures().get(0).getUserName()))
+                .andExpect(jsonPath("$.playerFigures[1].figure")
                         .value(gameDto.getPlayerFigures().get(1).getFigure().name()))
-                .andExpect(jsonPath("playerFigures[1].userName").value(gameDto.getPlayerFigures().get(1).getUserName()));
+                .andExpect(jsonPath("$.playerFigures[1].userName")
+                        .value(gameDto.getPlayerFigures().get(1).getUserName()));
     }
 
     @Test
@@ -94,9 +106,10 @@ class GameServiceImplTest {
         final GameDto gameDto = gameHelper.createValidGameDto();
         gameDto.setSize(-3);
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isBadRequest());
     }
 
@@ -105,9 +118,10 @@ class GameServiceImplTest {
         final GameDto gameDto = gameHelper.createValidGameDto();
         gameDto.setUsers(Collections.emptyList());
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isBadRequest());
     }
 
@@ -116,9 +130,10 @@ class GameServiceImplTest {
         final GameDto gameDto = gameHelper.createValidGameDto();
         gameDto.setPlayerFigures(Collections.emptyList());
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isBadRequest());
     }
 
@@ -127,9 +142,10 @@ class GameServiceImplTest {
         final GameDto gameDto = gameHelper.createValidGameDto();
         gameDto.setPlayerFigures(gameHelper.createPlayerFigureDtoListWithTheSameFigure());
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isBadRequest());
     }
 
@@ -139,9 +155,10 @@ class GameServiceImplTest {
         gameDto.setUsers(List.of(userHelper.createValidUserFirst(), userHelper.createValidUserFirst()).stream()
                 .map(it -> userMapper.mapToDto(it)).collect(Collectors.toList()));
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("category").value(ErrorCategory.UNKNOWN_ERROR.name()))
                 .andExpect(jsonPath("message").isNotEmpty());
@@ -152,9 +169,10 @@ class GameServiceImplTest {
         final GameDto gameDto = gameHelper.createValidGameDto();
         gameDto.setPlayerFigures(gameHelper.createPlayerFigureListWithTheSameNames());
 
-        mockMvc.perform(post("/games")
-                        .content(objectMapper.writeValueAsString(gameDto))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+        mockMvc.perform(authorized(post("/games")
+                                .content(objectMapper.writeValueAsString(gameDto))
+                                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON),
+                        new AuthTestClaims(List.of(RoleName.CUSTOMER))))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("category").value(ErrorCategory.UNKNOWN_ERROR.name()))
                 .andExpect(jsonPath("message").isNotEmpty());
