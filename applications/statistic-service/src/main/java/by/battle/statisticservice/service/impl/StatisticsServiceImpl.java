@@ -9,6 +9,8 @@ import by.battle.statisticservice.service.StatisticsService;
 import by.battle.statisticservice.updaters.ResultUpdater;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +67,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         mapIdUserToStatistics.put(statisticsUser.getUserId(), statisticsUser);
         ResultUpdater resultUpdater = resultUpdaterMap.get(getResult(gameDto, index).name());
         return resultUpdater.setResult(statisticsUser);
+    }
+
+    @Override
+    public Page<StatisticsUser> searchAllStatistics(Specification<StatisticsUser> specification, org.springframework.data.domain.Pageable pageable) {
+        return statisticsRepository.findAll(specification, pageable);
     }
 
     private List<ResultUserDto> createListResultUserDto(GameDto gameDto) {
